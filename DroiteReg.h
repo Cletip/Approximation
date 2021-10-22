@@ -7,6 +7,7 @@
 
 
 polynome *UneDroiteReg(Liste l);
+polynome *DeuxDroiteReg(Liste l);
 
 #endif /* DROITEREG_HADER_ */
 
