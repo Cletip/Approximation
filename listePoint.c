@@ -261,17 +261,60 @@ void ViderListe(Liste *l)
   l->first = NULL;
 }
 
-/* Liste *creerunelistealéa(int taille) */
-/* { */
-/*   int i; */
-/*   Liste maliste = creerListe(); */
-/*   Liste *psurliste = &maliste; */
-/*   point unpoint; */
-/*   for (i = 0; i < taille; ++i) */
-/*   { */
-/*     unpoint[0][0] = i; */
-/*     unpoint[1][0] = rand() % MAX); */
-/*     ajouteFin(psurliste, unpoint); */
-/*   } */
-/*   return psurliste; */
-/* } */
+double moyXY(float **Res, int nbPoints){
+  double CA = 0;
+  for(int i = 0; i < nbPoints; i++){
+    CA += Res[0][i]*Res[1][i];
+  }
+  return CA/nbPoints;
+}
+double moyX(float **Res, int nbPoints){
+  double CA = 0;
+   for(int i = 0; i < nbPoints; i++){
+     CA += Res[0][i];
+   }
+   return CA/nbPoints;
+}
+double moyY(float **Res, int nbPoints){
+  double CA = 0;
+   for(int i = 0; i < nbPoints; i++){
+     CA += Res[1][i];
+   }
+   return CA/nbPoints;
+}
+double moyXmoyY(float **Res, int nbPoints){
+  double CA = 0;
+  double CI = 0;
+  for(int i = 0; i < nbPoints; i++){
+    CA += Res[0][i];
+    CI += Res[1][i];
+  }
+  return CA/nbPoints * CI/nbPoints;
+}
+double moyXcar(float **Res, int nbPoints){
+  double CA = 0;
+   for(int i = 0; i < nbPoints; i++){
+     CA +=  Res[0][i] * Res[0][i];
+   }
+   return CA/nbPoints;
+}
+double carmoyX(float **Res, int nbPoints){
+  double CA = 0;
+   for(int i = 0; i < nbPoints; i++){
+     CA += Res[0][i];
+   }
+   long double y = CA/nbPoints;
+   return y*y;
+}
+
+
+float **lnListe(float **Res, int nbPoints){
+  float **Sol = (float **)malloc(sizeof(float *)*2);
+  Sol[0] = (float *)malloc(sizeof(float)*nbPoints);
+  Sol[1] = (float *)malloc(sizeof(float)*nbPoints);
+  for(int i = 0; i < nbPoints; i++){
+    Sol[0][i] = log(Res[0][i]);
+    Sol[1][i] = log(Res[1][i]);
+  }
+  return Sol;
+}

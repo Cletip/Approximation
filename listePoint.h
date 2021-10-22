@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /**
  * \brief Structure correspondante à un point.
@@ -130,5 +131,13 @@ void supprMaillon(Liste *l, int nbMaillon);
 
 float **ListeToTabsPoints(Liste l);
 void ViderListe(Liste *l);
+
+double moyXY(float **Res, int nbPoints);
+double moyX(float **Res, int nbPoints);
+double moyY(float **Res, int nbPoints);
+double moyXmoyY(float **Res, int nbPoints);
+double moyXcar(float **Res, int nbPoints);
+double carmoyX(float **Res, int nbPoints);
+float **lnListe(float **Res, int nbPoints);
 
 #endif /* LISTE_HEADER_ */
