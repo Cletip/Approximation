@@ -46,8 +46,8 @@ int main()
     case 'h':
       printf(
           "    h : Afficher cette aide.\n    g : Ouvre une fenêtre "
-          "graphique.\n    f : Remplir automatiquement.\n    n : Applique "
-          "l'approximation d'une ligne régression linéaire.\n    l : applique l'interpolation de "
+          "graphique.\n    f : Remplir automatiquement.\n    u : Applique "
+          "l'approximation d'une droite de régression linéaire.\n    l : applique l'interpolation de "
           "lagrange.\n    m : Applique l'interpolation de Newton avec un "
           "affichage précis.\n    l : applique l'interpolation de lagrange "
           "avec un affichage précis.\n    r : Permet de remplir des points.\n  "
@@ -59,8 +59,8 @@ int main()
     case 'f':
       casAutoFill(&listePoints);
       break;
-    case 'n':
-      //      Solution = ResolutionParNewton(listePoints);
+    case 'u':
+      Solution = UneDroiteReg(listePoints);
       affichepolynomePrecis(Solution, listePoints);
       break;
     case 'm':
