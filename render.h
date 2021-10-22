@@ -8,9 +8,9 @@
 #ifndef RENDER_HEADER_
 #define RENDER_HEADER_
 
-#include "lagrange.h"
+//#include "lagrange.h"
 #include "listePoint.h"
-#include "newton.h"
+//#include "newton.h"
 #include "polynome.h"
 
 #include <SDL2/SDL.h>

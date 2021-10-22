@@ -1,7 +1,7 @@
 #include "render.h"
-#include "lagrange.h"
+//#include "lagrange.h"
 #include "listePoint.h"
-#include "polynome.h"
+//#include "polynome.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_render.h>
@@ -27,8 +27,8 @@ Liste *RenderingInterpolation(Liste *l)
   int SizeX = 1200; /*!< Taille de l'écran en largeur. */
   int SizeY = 750;  /*!< Taille de l'écran en longueur. */
 
-  polynome *newt = ResolutionParNewton(*l);
-  polynome *lagr = calculLagrange(*l);
+  //  polynome *newt = ResolutionParNewton(*l);
+  //  polynome *lagr = calculLagrange(*l);
   float lx = -10000000000;
   float ly = -10000000000;
 
@@ -81,6 +81,7 @@ Liste *RenderingInterpolation(Liste *l)
   /* calcul des deux courbes  */
   float sol = 0;
   point ptempo;
+  /*
   for (int i = 0; i < (graphXS + 2); i++)
   {
     sol = 0;
@@ -103,7 +104,7 @@ Liste *RenderingInterpolation(Liste *l)
     ptempo.x = (float)(i + graphXdeb - 1);
     ptempo.y = sol;
     ajouteFin(&pointLagr, ptempo);
-  }
+    }*/
 
   /************Initialisation des variables de temps**************/
   LastFrame = getTime();
@@ -119,9 +120,9 @@ Liste *RenderingInterpolation(Liste *l)
     if (NowTime - LastFrame > timeForNewFrame)
     {
 
-      draw(renderer, SizeX, SizeY, newt, lagr, pointNewt, pointLagr, *l, Font,
-           graphXdeb, graphYdeb, graphXS, graphYS, Graph, StringX, StringY,
-           pointeurWriteEmp);
+      //      draw(renderer, SizeX, SizeY, newt, lagr, pointNewt, pointLagr, *l, Font,
+      //           graphXdeb, graphYdeb, graphXS, graphYS, Graph, StringX, StringY,
+      //           pointeurWriteEmp);
 
       SDL_RenderPresent(renderer);
       SDL_RenderClear(renderer);
@@ -131,11 +132,11 @@ Liste *RenderingInterpolation(Liste *l)
     }
     else if (NowTime - LastTick > timeForNewTick)
     {
-      if (!done)
+      /*if (!done)
       {
-        newt = ResolutionParNewton(*l);
-        lagr = calculLagrange(*l);
-        // lagr = AdaptePoly(lagr);
+	newt = ResolutionParNewton(*l);
+	lagr = calculLagrange(*l);
+	lagr = AdaptePoly(lagr);
         ViderListe(&pointNewt);
         done = 1;
         for (int i = 0; i < nbPoints; i++)
@@ -244,7 +245,7 @@ Liste *RenderingInterpolation(Liste *l)
         }
 
         SDL_SetRenderTarget(renderer, NULL);
-      }
+	}*/
 
       LastTick += timeForNewTick;
       tickCount++;

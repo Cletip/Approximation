@@ -17,8 +17,6 @@
 
  */
 #include "main.h"
-#include "listePoint.h"
-#include "polynome.h"
 
 /**
  * \fn int main ()
@@ -49,7 +47,7 @@ int main()
       printf(
           "    h : Afficher cette aide.\n    g : Ouvre une fenêtre "
           "graphique.\n    f : Remplir automatiquement.\n    n : Applique "
-          "l'interpolation de Newton.\n    l : applique l'interpolation de "
+          "l'approximation d'une ligne régression linéaire.\n    l : applique l'interpolation de "
           "lagrange.\n    m : Applique l'interpolation de Newton avec un "
           "affichage précis.\n    l : applique l'interpolation de lagrange "
           "avec un affichage précis.\n    r : Permet de remplir des points.\n  "
@@ -62,19 +60,19 @@ int main()
       casAutoFill(&listePoints);
       break;
     case 'n':
-      Solution = ResolutionParNewton(listePoints);
-      affichepolynome(Solution);
+      //      Solution = ResolutionParNewton(listePoints);
+      affichepolynomePrecis(Solution, listePoints);
       break;
     case 'm':
-      Solution = ResolutionParNewton(listePoints);
+      //      Solution = ResolutionParNewton(listePoints);
       affichepolynomePrecis(Solution, listePoints);
       break;
     case 'l':
-      Solution = calculLagrange(listePoints);
+      //      Solution = calculLagrange(listePoints);
       affichepolynome(Solution);
       break;
     case 'k':
-      Solution = calculLagrange(listePoints);
+      //      Solution = calculLagrange(listePoints);
       affichepolynomePrecis(Solution, listePoints);
       break;
     case 'r':
