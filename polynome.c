@@ -57,10 +57,46 @@ void affichepolynome(polynome *p)
       printf("+ %6.2f*x^(%d)  ", p->p[i], i);
     }
     else
-    { 
+    {
       printf("%6.2f ", p->p[i]);
     }
   }
+  printf("\n");
+}
+
+void affichepolynomeexpo(polynome *p)
+{
+  int i;
+  for (i = 0; i < p->maxDeg + 1; ++i)
+  {
+    if (i != 0)
+    {
+      printf("d = %6.2f", p->p[i]);
+    }
+    else
+    {
+      printf("ce = %6.2f ", p->p[i]);
+    }
+  }
+  printf("Donc le poly expo est : %6.2f ^ %6.2f x\n", p->p[0], p->p[1]);
+  printf("\n");
+}
+
+void affichepolynomepuissance(polynome *p)
+{
+  int i;
+  for (i = 0; i < p->maxDeg + 1; ++i)
+  {
+    if (i != 0)
+    {
+      printf("b = %6.2f  ", p->p[i]);
+    }
+    else
+    {
+      printf("a = %6.2f ", p->p[i]);
+    }
+  }
+  printf("Donc le poly puissance est : %6.2f * x ^ %6.2f\n", p->p[0], p->p[1]);
   printf("\n");
 }
 
@@ -74,13 +110,12 @@ void affichepolynomePrecis(polynome *p, Liste l)
       printf("+ %30.25f*x^(%d)\n", p->p[i], i);
     }
     else
-    { 
+    {
       printf("%30.25f\n", p->p[i]);
     }
   }
   printf("\nLa moyenne d'incertitude est de : %f.\n", precision(p, l));
 }
-
 
 double precision(polynome *p, Liste l){
   int n = ListLenght(l);

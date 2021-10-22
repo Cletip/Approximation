@@ -69,12 +69,12 @@ int main()
       affichepolynomePrecis(Solution, listePoints);
       break;
     case 'l':
-      Solution = exponentiel(listePoints);
-      affichepolynome(Solution);
+      Solution = puissance(listePoints);
+      affichepolynomepuissance(Solution);
       break;
     case 'm':
-      Solution = puissance(listePoints);
-      affichepolynomePrecis(Solution, listePoints);
+      Solution = exponentiel(listePoints);
+      affichepolynomeexpo(Solution);
       break;
     case 'r':
       casRemplir(&listePoints);

@@ -14,10 +14,12 @@ polynome *exponentiel(Liste listedepoint)
   float a;
   float b;
 
-  P->p[1] = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
-            (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
-  float temp = moyenneYln - (P->p[1] * moyenneX);
-  P->p[0] = exp(1) * exp(temp);
+  a = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
+      (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
+  float temp = moyenneYln - (a * moyenneX);
+  b = exp(1) * exp(temp);
+  P->p[1] = b;
+  P->p[0] = a;
   return P;
 }
 
@@ -36,9 +38,10 @@ polynome *puissance(Liste listedepoint)
   b = (moyXY(Tln, n) - moyX(Tln, n) * moyY(Tln, n)) /
       (moyXcar(Tln, n) - carmoyX(Tln, n));
 
-  a = log(moyenneYnl - (b * moyenneXnl));
+  float temp = moyenneYnl - (b * moyenneXnl);
+  a = exp(temp);
 
-  P->p[1] = a;
-  P->p[0] = b;
+  P->p[1] = b;
+  P->p[0] = a;
   return P;
 }
