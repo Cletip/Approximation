@@ -10,8 +10,8 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include "lagrange.h"
-#include "newton.h"
+//#include "lagrange.h"
+//#include "newton.h"
 #include "render.h"
 
 void casRemplir(Liste *l);
