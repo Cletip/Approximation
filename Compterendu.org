@@ -100,6 +100,7 @@ Conclusion : Nous devons effectuer cette formule :
 
 \[  N(x)=[y_{0}]+[y_{0},y_{1}](x-x_{0})+\ldots +[y_{0},\ldots ,y_{n}](x-x_{0})\ldots (x-x_{n}).}  \]
 
+
 * Présentation des programmes commentés
 
 Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables [[file:lagrange.c][ici pour la méthode de Lagrange]], ainsi qu'[[file:newton.c][ici pour la méthode Newton]].
