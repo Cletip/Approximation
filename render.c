@@ -1,5 +1,6 @@
 #include "render.h"
 //#include "lagrange.h"
+#include "DroiteReg.h"
 #include "listePoint.h"
 //#include "polynome.h"
 #include <SDL2/SDL_events.h>
@@ -27,13 +28,25 @@ Liste *RenderingInterpolation(Liste *l)
   int SizeX = 1200; /*!< Taille de l'écran en largeur. */
   int SizeY = 750;  /*!< Taille de l'écran en longueur. */
 
-  //  polynome *newt = ResolutionParNewton(*l);
-  //  polynome *lagr = calculLagrange(*l);
+  polynome *ResultPoly[4];
+  ResultPoly[0] = UneDroiteReg(*l);
+  ResultPoly[1] = DeuxDroiteReg(*l);
+
+  // Not the good one
+  ResultPoly[2] = UneDroiteReg(*l);
+  ResultPoly[3] = UneDroiteReg(*l);
+  
   float lx = -10000000000;
   float ly = -10000000000;
 
-  Liste pointNewt = creerListe();
-  Liste pointLagr = creerListe();
+  Liste ResultPoints[4];
+  ResultPoints[0] = creerListe();
+  ResultPoints[1] = creerListe();
+  ResultPoints[2] = creerListe();
+  ResultPoints[3] = creerListe();
+
+  int ascciListeAff = 3;
+  
   long int LastFrame;
   long int TimeCount;
   long int NowTime;
@@ -52,12 +65,7 @@ Liste *RenderingInterpolation(Liste *l)
   /* Nombre de points à chargé */
   int nbPoints = 10000;
 
-  char StringX[50];
-  char StringY[50];
-  strcpy(StringX, "0");
-  strcpy(StringY, "0");
-  int pointeurWriteEmp = 0;
-
+  
   /* statut. Si 1 alors réactualisé */
   int done = 0;
   SDL_Texture *Graph;
@@ -79,32 +87,8 @@ Liste *RenderingInterpolation(Liste *l)
   TTF_Font *Font = TTF_OpenFont("Res/Roboto-Black.ttf", 50);
 
   /* calcul des deux courbes  */
-  float sol = 0;
   point ptempo;
-  /*
-  for (int i = 0; i < (graphXS + 2); i++)
-  {
-    sol = 0;
-    for (int j = 0; j < newt->maxDeg + 1; j++)
-    {
-      sol += newt->p[j] * pow((i + (graphXdeb)-1), j);
-    }
-    ptempo.x = (float)(i + graphXdeb - 1);
-    ptempo.y = sol;
-    ajouteFin(&pointNewt, ptempo);
-  }
-
-  for (int i = 0; i < (graphXS + 2); i++)
-  {
-    sol = 0;
-    for (int j = 0; j < lagr->maxDeg + 1; j++)
-    {
-      sol += lagr->p[j] * pow((float)(i + graphXdeb - 1), j);
-    }
-    ptempo.x = (float)(i + graphXdeb - 1);
-    ptempo.y = sol;
-    ajouteFin(&pointLagr, ptempo);
-    }*/
+  
 
   /************Initialisation des variables de temps**************/
   LastFrame = getTime();
@@ -120,10 +104,10 @@ Liste *RenderingInterpolation(Liste *l)
     if (NowTime - LastFrame > timeForNewFrame)
     {
 
-      //      draw(renderer, SizeX, SizeY, newt, lagr, pointNewt, pointLagr, *l, Font,
-      //           graphXdeb, graphYdeb, graphXS, graphYS, Graph, StringX, StringY,
-      //           pointeurWriteEmp);
+      draw(renderer, SizeX, SizeY, ResultPoly, ResultPoints, *l, Font,
+                graphXdeb, graphYdeb, graphXS, graphYS, Graph);
 
+      
       SDL_RenderPresent(renderer);
       SDL_RenderClear(renderer);
 
@@ -132,43 +116,19 @@ Liste *RenderingInterpolation(Liste *l)
     }
     else if (NowTime - LastTick > timeForNewTick)
     {
-      /*if (!done)
+      if (!done)
       {
-	newt = ResolutionParNewton(*l);
-	lagr = calculLagrange(*l);
-	lagr = AdaptePoly(lagr);
-        ViderListe(&pointNewt);
-        done = 1;
-        for (int i = 0; i < nbPoints; i++)
-        {
-          sol = 0;
-          for (int j = 0; j < newt->maxDeg + 1; j++)
-          {
-            sol +=
-                newt->p[j] *
-                pow((float)(graphXdeb + (i * (float)(graphXS) / nbPoints)), j);
-          }
-          ptempo.x = (float)((i * (float)(graphXS) / nbPoints) + graphXdeb);
-          ptempo.y = sol;
-          ajouteFin(&pointNewt, ptempo);
-        }
+	done = 1;
+	
+	ResultPoly[0] = UneDroiteReg(*l);
+	ResultPoly[1] = DeuxDroiteReg(*l);
 
-        ViderListe(&pointLagr);
-        for (int i = 0; i < nbPoints; i++)
-        {
-          sol = 0;
-          for (int j = 0; j < lagr->maxDeg + 1; j++)
-          {
-            sol +=
-                lagr->p[j] *
-                pow((float)(graphXdeb + (i * (float)(graphXS) / nbPoints)), j);
-          }
-          ptempo.x = graphXdeb + (i * (float)(graphXS) / nbPoints);
-          ptempo.y = sol;
-          ajouteFin(&pointLagr, ptempo);
-        }
+	// Not the good one
+	ResultPoly[2] = UneDroiteReg(*l);
+	ResultPoly[3] = UneDroiteReg(*l);
 
-        SDL_SetRenderTarget(renderer, Graph);
+
+	SDL_SetRenderTarget(renderer, Graph);
         // mise du fond en blanc
         SDL_Rect rectangle;
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -186,67 +146,84 @@ Liste *RenderingInterpolation(Liste *l)
         SDL_RenderDrawLine(renderer, (SizeX / 2) / 2, (float)(SizeY / 2) / 100,
                            (SizeX / 2) / 2, SizeY / 2 - 2 * SizeY / 2 / 200);
 
-        Maillon *n = pointNewt.first;
-        Maillon *la = pointLagr.first;
+	
 
-        if (n != NULL)
-        {
-          while (n->suiv != NULL)
-          {
-            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-            SDL_RenderDrawLine(renderer,
-                               ((n->val.x - graphXdeb) / graphXS) *
-                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-                                   (SizeX / 2 / 100),
-                               ((-n->val.y - graphYdeb) / graphXS) *
-                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-                                   (SizeY / 2 / 100),
-                               ((n->suiv->val.x - graphXdeb) / graphXS) *
-                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-                                   (SizeX / 2 / 100),
-                               ((-n->suiv->val.y - graphYdeb) / graphXS) *
-                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-                                   (SizeY / 2 / 100));
+	for(int numb = 0; numb < 4; numb++){
+	  ViderListe(&ResultPoints[numb]);
+	  int temporaireVlueAscii = ascciListeAff;
+	  for(int tmp = 3; tmp > numb; tmp--){
+	    if(temporaireVlueAscii/(float)(pow(2, tmp)) >= 1){
+	      temporaireVlueAscii -= pow(2, tmp);
+	    }
+	  }
+	  if(temporaireVlueAscii/(float)(pow(2, numb)) >= 1){
+	    for (int i = 0; i < nbPoints; i++)
+	      {  
+		ptempo.x = (float)((i * (float)(graphXS) / nbPoints) + graphXdeb);
+		switch(numb){
+		case 0:ptempo.y = ResultPoly[numb]->p[1] * (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) + ResultPoly[numb]->p[0];break;
+		case 1:ptempo.y = ResultPoly[numb]->p[1] * (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) + ResultPoly[numb]->p[0];break;
+		case 2:ptempo.y = pow(ResultPoly[numb]->p[0], (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) * ResultPoly[numb]->p[1]);break;
+		case 3:ptempo.y = ResultPoly[numb]->p[0]* pow((float)(graphXdeb + (i * (float)(graphXS) / nbPoints)), ResultPoly[numb]->p[1]);break;
+		}
+		ptempo.y = ResultPoly[numb]->p[1] * (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) + ResultPoly[numb]->p[0];
+		ajouteFin(&ResultPoints[numb], ptempo);
+	      }
 
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-            SDL_RenderDrawLine(renderer,
-                               ((la->val.x - graphXdeb) / graphXS) *
-                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-                                   (SizeX / 2 / 100),
-                               ((-la->val.y - graphYdeb) / graphXS) *
-                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-                                   (SizeY / 2 / 100),
-                               ((la->suiv->val.x - graphXdeb) / graphXS) *
-                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-                                   (SizeX / 2 / 100),
-                               ((-la->suiv->val.y - graphYdeb) / graphXS) *
-                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-                                   (SizeY / 2 / 100));
+	    
+	    Maillon *m = ResultPoints[numb].first;
 
-            la = la->suiv;
-            n = n->suiv;
-          }
-        }
+	    switch(numb){
+	    case 0:SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);break;
+	    case 1:SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);break;
+	    case 2:SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);break;
+	    case 3:SDL_SetRenderDrawColor(renderer, 255, 140, 0, 255);break;
+	    default:SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);break;
 
+	    }
+	    
+	    if (m != NULL)
+	      {
+		while (m->suiv != NULL)
+		  {
+		    SDL_RenderDrawLine(renderer,
+				       ((m->val.x - graphXdeb) / graphXS) *
+                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
+				       (SizeX / 2 / 100),
+				       ((-m->val.y - graphYdeb) / graphXS) *
+                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
+				       (SizeY / 2 / 100),
+				       ((m->suiv->val.x - graphXdeb) / graphXS) *
+                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
+				       (SizeX / 2 / 100),
+				       ((-m->suiv->val.y - graphYdeb) / graphXS) *
+                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
+				       (SizeY / 2 / 100));
+		    m = m->suiv;
+		  }
+	      }	    
+	  }
+	}
+	
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         Maillon *m = l->first;
         while (m != NULL)
-        {
-          rectangle.x = ((m->val.x - graphXdeb) / graphXS) *
-                            (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-                        (SizeX / 2 / 100) - (SizeX / 2 / 400);
-          rectangle.y = ((-m->val.y - graphYdeb) / graphXS) *
-                            (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-                        (SizeY / 2 / 100) - (SizeX / 2 / 400);
-          rectangle.w = 2 * SizeX / 2 / 400;
-          rectangle.h = 2 * SizeX / 2 / 400;
-          SDL_RenderFillRect(renderer, &rectangle);
-          m = m->suiv;
-        }
+	  {
+	    rectangle.x = ((m->val.x - graphXdeb) / graphXS) *
+	      (SizeX / 2 - (2 * SizeX / 2 / 100)) +
+	      (SizeX / 2 / 100) - (SizeX / 2 / 400);
+	    rectangle.y = ((-m->val.y - graphYdeb) / graphXS) *
+	      (SizeY / 2 - (2 * SizeY / 2 / 100)) +
+	      (SizeY / 2 / 100) - (SizeX / 2 / 400);
+	    rectangle.w = 2 * SizeX / 2 / 400;
+	    rectangle.h = 2 * SizeX / 2 / 400;
+	    SDL_RenderFillRect(renderer, &rectangle);
+	    m = m->suiv;
+	  }
 
         SDL_SetRenderTarget(renderer, NULL);
-	}*/
-
+      }
+	
       LastTick += timeForNewTick;
       tickCount++;
     }
@@ -517,7 +494,7 @@ void keyUp(SDL_KeyboardEvent *key, int *Stape){
  * \param *renderer l'adresse de l'intérieur de la fenetre que l'on veut
  * redessiner \return void
  */
-void draw(SDL_Renderer *renderer, int SX, int SY, polynome *newt, polynome *lagr, Liste pointNewt, Liste pointLagr, Liste l, TTF_Font* Font, int TXdeb, int TYdeb, int TXfin, int TYfin, SDL_Texture  *Graph, char *StringX, char *StringY,  int pointeurWriteEmp){
+void draw(SDL_Renderer *renderer, int SX, int SY, polynome *PolyTab[4], Liste listeTab[4], Liste l, TTF_Font *Font, int TXdeb, int TYdeb, int TXfin, int TYfin, SDL_Texture *Graph){
   SDL_Rect rectangle;
   int posMX;
   int posMY;
@@ -544,12 +521,16 @@ void draw(SDL_Renderer *renderer, int SX, int SY, polynome *newt, polynome *lagr
 
   SDL_RenderDrawLine(renderer, (6*SX)/8, 0, (6*SX)/8, (7*SY)/8);
 
+  char s[1000];
+  SDL_Color Dark = {0, 0, 0};
+  //  SDL_Color Green = {0, 255, 0};
+  SDL_Surface* surfaceMessage; 
+  SDL_Texture* Message;
+  SDL_Rect Message_rect;
 
-  
-  
 
   //écrit le polynôme de newton
-  
+  /*
   char s[1000];
   SDL_Color Green = {0, 255, 0};
   strcpy(s, "Newtone : ");
@@ -612,11 +593,12 @@ void draw(SDL_Renderer *renderer, int SX, int SY, polynome *newt, polynome *lagr
   SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
   SDL_FreeSurface(surfaceMessage);
   SDL_DestroyTexture(Message);
-
+  */
 
   
+  
   //ecrit l'emplacement du pointeur
-  SDL_Color Dark = {0, 0, 0};
+  
   sprintf(s, "Pointeur :");
   surfaceMessage = TTF_RenderText_Solid(Font, s, Dark); 
   Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -699,6 +681,7 @@ void draw(SDL_Renderer *renderer, int SX, int SY, polynome *newt, polynome *lagr
   rectangle.h = (7*SY/8);
   SDL_RenderFillRect(renderer, &rectangle);
   SDL_RenderCopy(renderer, Graph, NULL, &rectangle);
+
 
 
   //barre noire qui detour la liste des points

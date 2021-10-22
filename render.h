@@ -69,10 +69,9 @@ void keyUp(SDL_KeyboardEvent *key, int *Stape);
  * \param *renderer l'adresse de l'intérieur de la fenetre que l'on veut
  * redessiner \return void
  */
-void draw(SDL_Renderer *renderer, int SX, int SY, polynome *newt,
-          polynome *lagr, Liste pointNewt, Liste pointLagr, Liste l,
+void draw(SDL_Renderer *renderer, int SX, int SY, polynome *PolyTab[4],
+          Liste listeTab[4], Liste l,
           TTF_Font *Font, int TXdeb, int TYdeb, int TXfin, int TYfin,
-          SDL_Texture *Graph, char *StringX, char *StringY,
-          int pointeurWriteEmp);
+          SDL_Texture *Graph);
 
 #endif /* RENDER_HEADER_ */
