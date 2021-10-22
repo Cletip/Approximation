@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /**
  * \brief Structure correspondante à un point.
@@ -137,5 +138,6 @@ double moyY(float **Res, int nbPoints);
 double moyXmoyY(float **Res, int nbPoints);
 double moyXcar(float **Res, int nbPoints);
 double carmoyX(float **Res, int nbPoints);
+float **lnListe(float **Res, int nbPoints);
 
 #endif /* LISTE_HEADER_ */

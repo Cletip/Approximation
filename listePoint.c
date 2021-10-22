@@ -306,3 +306,15 @@ double carmoyX(float **Res, int nbPoints){
    long double y = CA/nbPoints;
    return y*y;
 }
+
+
+float **lnListe(float **Res, int nbPoints){
+  float **Sol = (float **)malloc(sizeof(float *)*2);
+  Sol[0] = (float *)malloc(sizeof(float)*nbPoints);
+  Sol[1] = (float *)malloc(sizeof(float)*nbPoints);
+  for(int i = 0; i < nbPoints; i++){
+    Sol[0][i] = log(Res[0][i]);
+    Sol[1][i] = log(Res[1][i]);
+  }
+  return Sol;
+}
