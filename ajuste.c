@@ -1,15 +1,5 @@
 #include "ajuste.h"
 
-polynome *renvoieDroitepuissance(a, b)
-{
-  polynome *P = creePolynome(1);
-  P->p[1] = a;
-  P->p[0] = b;
-  return P;
-}
-
-void affichepuissance(polynome *p) { affichepolynome(p); }
-
 polynome *exponentiel(Liste listedepoint)
 {
 
@@ -24,8 +14,7 @@ polynome *exponentiel(Liste listedepoint)
   float a;
   float b;
 
-  /* pas bon       ici */
-  P->p[1] = (moyXY(Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
+  P->p[1] = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
             (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
   float temp = moyenneYln - (P->p[1] * moyenneX);
   P->p[0] = exp(1) * exp(temp);

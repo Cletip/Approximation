@@ -1,3 +1,4 @@
+
 /*!
  * \file liste.h
  * \brief File corresponding to the header of liste.c.
@@ -8,10 +9,9 @@
 #ifndef LISTE_HEADER_
 #define LISTE_HEADER_
 
-
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 /**
  * \brief Structure correspondante à un point.
@@ -139,5 +139,6 @@ double moyXmoyY(float **Res, int nbPoints);
 double moyXcar(float **Res, int nbPoints);
 double carmoyX(float **Res, int nbPoints);
 float **lnListe(float **Res, int nbPoints);
+double moyXY2tab(float **Res, float **LnRes, int nbPoints);
 
 #endif /* LISTE_HEADER_ */

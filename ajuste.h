@@ -6,5 +6,6 @@
 #include <stdlib.h>
 
 polynome *puissance(Liste listedepoint);
+polynome *exponentiel(Liste listedepoint);
 
 #endif /* AJUSTE_HADER_ */

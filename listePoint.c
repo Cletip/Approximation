@@ -261,14 +261,17 @@ void ViderListe(Liste *l)
   l->first = NULL;
 }
 
-double moyXY(float **Res, int nbPoints){
-  double CA = 0;
-  for(int i = 0; i < nbPoints; i++){
-    CA += Res[0][i]*Res[1][i];
+double moyXY(float **Res, int nbPoints)
+{
+  float CA = 0;
+  for (int i = 0; i < nbPoints; i++)
+  {
+    CA += Res[0][i] * Res[1][i];
   }
-  return CA/nbPoints;
+  return CA / nbPoints;
 }
-double moyX(float **Res, int nbPoints){
+double moyX(float **Res, int nbPoints)
+{
   double CA = 0;
    for(int i = 0; i < nbPoints; i++){
      CA += Res[0][i];
@@ -307,14 +310,25 @@ double carmoyX(float **Res, int nbPoints){
    return y*y;
 }
 
-
-float **lnListe(float **Res, int nbPoints){
-  float **Sol = (float **)malloc(sizeof(float *)*2);
-  Sol[0] = (float *)malloc(sizeof(float)*nbPoints);
-  Sol[1] = (float *)malloc(sizeof(float)*nbPoints);
-  for(int i = 0; i < nbPoints; i++){
+float **lnListe(float **Res, int nbPoints)
+{
+  float **Sol = (float **)malloc(sizeof(float *) * 2);
+  Sol[0] = (float *)malloc(sizeof(float) * nbPoints);
+  Sol[1] = (float *)malloc(sizeof(float) * nbPoints);
+  for (int i = 0; i < nbPoints; i++)
+  {
     Sol[0][i] = log(Res[0][i]);
     Sol[1][i] = log(Res[1][i]);
   }
   return Sol;
+}
+
+double moyXY2tab(float **Res, float **LnRes, int nbPoints)
+{
+  double CA = 0;
+  for (int i = 0; i < nbPoints; i++)
+  {
+    CA += Res[0][i] * LnRes[1][i];
+  }
+  return CA / nbPoints;
 }

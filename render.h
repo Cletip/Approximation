@@ -8,15 +8,19 @@
 #ifndef RENDER_HEADER_
 #define RENDER_HEADER_
 
-//#include "lagrange.h"
+#include "DroiteReg.h"
+#include "ajuste.h"
 #include "listePoint.h"
-//#include "newton.h"
 #include "polynome.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <math.h>
 #include <time.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define FPS_TO_GET 60  /*!< Frames render per second*/
 #define TICK_TO_GET 60 /*!< Verification done per second*/
@@ -70,8 +74,7 @@ void keyUp(SDL_KeyboardEvent *key, int *Stape);
  * redessiner \return void
  */
 void draw(SDL_Renderer *renderer, int SX, int SY, polynome *PolyTab[4],
-          Liste listeTab[4], Liste l,
-          TTF_Font *Font, int TXdeb, int TYdeb, int TXfin, int TYfin,
-          SDL_Texture *Graph);
+          Liste listeTab[4], Liste l, TTF_Font *Font, int TXdeb, int TYdeb,
+          int TXfin, int TYfin, SDL_Texture *Graph);
 
 #endif /* RENDER_HEADER_ */

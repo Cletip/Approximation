@@ -1,15 +1,4 @@
 #include "render.h"
-//#include "lagrange.h"
-#include "DroiteReg.h"
-#include "listePoint.h"
-//#include "polynome.h"
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_mouse.h>
-#include <SDL2/SDL_render.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 /**
  * \fn int main (int argc, char **argv)
@@ -35,7 +24,7 @@ Liste *RenderingInterpolation(Liste *l)
   // Not the good one
   ResultPoly[2] = UneDroiteReg(*l);
   ResultPoly[3] = UneDroiteReg(*l);
-  
+
   float lx = -10000000000;
   float ly = -10000000000;
 
@@ -45,8 +34,8 @@ Liste *RenderingInterpolation(Liste *l)
   ResultPoints[2] = creerListe();
   ResultPoints[3] = creerListe();
 
-  int ascciListeAff = 3;
-  
+  int ascciListeAff = 15;
+
   long int LastFrame;
   long int TimeCount;
   long int NowTime;
@@ -65,7 +54,6 @@ Liste *RenderingInterpolation(Liste *l)
   /* Nombre de points à chargé */
   int nbPoints = 10000;
 
-  
   /* statut. Si 1 alors réactualisé */
   int done = 0;
   SDL_Texture *Graph;
@@ -88,7 +76,6 @@ Liste *RenderingInterpolation(Liste *l)
 
   /* calcul des deux courbes  */
   point ptempo;
-  
 
   /************Initialisation des variables de temps**************/
   LastFrame = getTime();
@@ -105,9 +92,8 @@ Liste *RenderingInterpolation(Liste *l)
     {
 
       draw(renderer, SizeX, SizeY, ResultPoly, ResultPoints, *l, Font,
-                graphXdeb, graphYdeb, graphXS, graphYS, Graph);
+           graphXdeb, graphYdeb, graphXS, graphYS, Graph);
 
-      
       SDL_RenderPresent(renderer);
       SDL_RenderClear(renderer);
 
@@ -118,17 +104,16 @@ Liste *RenderingInterpolation(Liste *l)
     {
       if (!done)
       {
-	done = 1;
-	
-	ResultPoly[0] = UneDroiteReg(*l);
-	ResultPoly[1] = DeuxDroiteReg(*l);
+        done = 1;
 
-	// Not the good one
-	ResultPoly[2] = UneDroiteReg(*l);
-	ResultPoly[3] = UneDroiteReg(*l);
+        ResultPoly[0] = UneDroiteReg(*l);
+        ResultPoly[1] = DeuxDroiteReg(*l);
 
+        // Not the good one
+        ResultPoly[2] = exponentiel(*l);
+        ResultPoly[3] = puissance(*l);
 
-	SDL_SetRenderTarget(renderer, Graph);
+        SDL_SetRenderTarget(renderer, Graph);
         // mise du fond en blanc
         SDL_Rect rectangle;
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -146,84 +131,119 @@ Liste *RenderingInterpolation(Liste *l)
         SDL_RenderDrawLine(renderer, (SizeX / 2) / 2, (float)(SizeY / 2) / 100,
                            (SizeX / 2) / 2, SizeY / 2 - 2 * SizeY / 2 / 200);
 
-	
+        for (int numb = 0; numb < 4; numb++)
+        {
+          ViderListe(&ResultPoints[numb]);
+          int temporaireVlueAscii = ascciListeAff;
+          for (int tmp = 3; tmp > numb; tmp--)
+          {
+            if (temporaireVlueAscii / (float)(pow(2, tmp)) >= 1)
+            {
+              temporaireVlueAscii -= pow(2, tmp);
+            }
+          }
+          if (temporaireVlueAscii / (float)(pow(2, numb)) >= 1)
+          {
+            for (int i = 0; i < nbPoints; i++)
+            {
+              ptempo.x = (float)((i * (float)(graphXS) / nbPoints) + graphXdeb);
+              switch (numb)
+              {
+              case 0:
+                ptempo.y =
+                    ResultPoly[numb]->p[1] *
+                        (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) +
+                    ResultPoly[numb]->p[0];
+                break;
+              case 1:
+                ptempo.y =
+                    ResultPoly[numb]->p[1] *
+                        (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) +
+                    ResultPoly[numb]->p[0];
+                break;
+              case 3:
+                ptempo.y =
+                    pow(ResultPoly[numb]->p[0],
+                        (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) *
+                            ResultPoly[numb]->p[1]);
+                break;
+              case 2:
+                ptempo.y =
+                    ResultPoly[numb]->p[0] *
+                    pow((float)(graphXdeb + (i * (float)(graphXS) / nbPoints)),
+                        ResultPoly[numb]->p[1]);
+                break;
+              }
+              ptempo.y =
+                  ResultPoly[numb]->p[1] *
+                      (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) +
+                  ResultPoly[numb]->p[0];
+              ajouteFin(&ResultPoints[numb], ptempo);
+            }
 
-	for(int numb = 0; numb < 4; numb++){
-	  ViderListe(&ResultPoints[numb]);
-	  int temporaireVlueAscii = ascciListeAff;
-	  for(int tmp = 3; tmp > numb; tmp--){
-	    if(temporaireVlueAscii/(float)(pow(2, tmp)) >= 1){
-	      temporaireVlueAscii -= pow(2, tmp);
-	    }
-	  }
-	  if(temporaireVlueAscii/(float)(pow(2, numb)) >= 1){
-	    for (int i = 0; i < nbPoints; i++)
-	      {  
-		ptempo.x = (float)((i * (float)(graphXS) / nbPoints) + graphXdeb);
-		switch(numb){
-		case 0:ptempo.y = ResultPoly[numb]->p[1] * (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) + ResultPoly[numb]->p[0];break;
-		case 1:ptempo.y = ResultPoly[numb]->p[1] * (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) + ResultPoly[numb]->p[0];break;
-		case 2:ptempo.y = pow(ResultPoly[numb]->p[0], (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) * ResultPoly[numb]->p[1]);break;
-		case 3:ptempo.y = ResultPoly[numb]->p[0]* pow((float)(graphXdeb + (i * (float)(graphXS) / nbPoints)), ResultPoly[numb]->p[1]);break;
-		}
-		ptempo.y = ResultPoly[numb]->p[1] * (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) + ResultPoly[numb]->p[0];
-		ajouteFin(&ResultPoints[numb], ptempo);
-	      }
+            Maillon *m = ResultPoints[numb].first;
 
-	    
-	    Maillon *m = ResultPoints[numb].first;
+            switch (numb)
+            {
+            case 0:
+              SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+              break;
+            case 1:
+              SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+              break;
+            case 2:
+              SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+              break;
+            case 3:
+              SDL_SetRenderDrawColor(renderer, 255, 140, 0, 255);
+              break;
+            default:
+              SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+              break;
+            }
 
-	    switch(numb){
-	    case 0:SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);break;
-	    case 1:SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);break;
-	    case 2:SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);break;
-	    case 3:SDL_SetRenderDrawColor(renderer, 255, 140, 0, 255);break;
-	    default:SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);break;
+            if (m != NULL)
+            {
+              while (m->suiv != NULL)
+              {
+                SDL_RenderDrawLine(renderer,
+                                   ((m->val.x - graphXdeb) / graphXS) *
+                                           (SizeX / 2 - (2 * SizeX / 2 / 100)) +
+                                       (SizeX / 2 / 100),
+                                   ((-m->val.y - graphYdeb) / graphXS) *
+                                           (SizeY / 2 - (2 * SizeY / 2 / 100)) +
+                                       (SizeY / 2 / 100),
+                                   ((m->suiv->val.x - graphXdeb) / graphXS) *
+                                           (SizeX / 2 - (2 * SizeX / 2 / 100)) +
+                                       (SizeX / 2 / 100),
+                                   ((-m->suiv->val.y - graphYdeb) / graphXS) *
+                                           (SizeY / 2 - (2 * SizeY / 2 / 100)) +
+                                       (SizeY / 2 / 100));
+                m = m->suiv;
+              }
+            }
+          }
+        }
 
-	    }
-	    
-	    if (m != NULL)
-	      {
-		while (m->suiv != NULL)
-		  {
-		    SDL_RenderDrawLine(renderer,
-				       ((m->val.x - graphXdeb) / graphXS) *
-                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-				       (SizeX / 2 / 100),
-				       ((-m->val.y - graphYdeb) / graphXS) *
-                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-				       (SizeY / 2 / 100),
-				       ((m->suiv->val.x - graphXdeb) / graphXS) *
-                                       (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-				       (SizeX / 2 / 100),
-				       ((-m->suiv->val.y - graphYdeb) / graphXS) *
-                                       (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-				       (SizeY / 2 / 100));
-		    m = m->suiv;
-		  }
-	      }	    
-	  }
-	}
-	
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         Maillon *m = l->first;
         while (m != NULL)
-	  {
-	    rectangle.x = ((m->val.x - graphXdeb) / graphXS) *
-	      (SizeX / 2 - (2 * SizeX / 2 / 100)) +
-	      (SizeX / 2 / 100) - (SizeX / 2 / 400);
-	    rectangle.y = ((-m->val.y - graphYdeb) / graphXS) *
-	      (SizeY / 2 - (2 * SizeY / 2 / 100)) +
-	      (SizeY / 2 / 100) - (SizeX / 2 / 400);
-	    rectangle.w = 2 * SizeX / 2 / 400;
-	    rectangle.h = 2 * SizeX / 2 / 400;
-	    SDL_RenderFillRect(renderer, &rectangle);
-	    m = m->suiv;
-	  }
+        {
+          rectangle.x = ((m->val.x - graphXdeb) / graphXS) *
+                            (SizeX / 2 - (2 * SizeX / 2 / 100)) +
+                        (SizeX / 2 / 100) - (SizeX / 2 / 400);
+          rectangle.y = ((-m->val.y - graphYdeb) / graphXS) *
+                            (SizeY / 2 - (2 * SizeY / 2 / 100)) +
+                        (SizeY / 2 / 100) - (SizeX / 2 / 400);
+          rectangle.w = 2 * SizeX / 2 / 400;
+          rectangle.h = 2 * SizeX / 2 / 400;
+          SDL_RenderFillRect(renderer, &rectangle);
+          m = m->suiv;
+        }
 
         SDL_SetRenderTarget(renderer, NULL);
       }
-	
+
       LastTick += timeForNewTick;
       tickCount++;
     }
@@ -301,9 +321,14 @@ Liste *RenderingInterpolation(Liste *l)
               ajouteFin(l, p);
               done = 0;
             }
-          }else if(sourisX > (6*SizeX/8) + SizeX/100 && sourisX < (6*SizeX/8) + SizeX/100 + SizeX/9 && sourisY > (SizeY/8) + (SizeY*10/25) && sourisY < (SizeY/8) + (SizeY*10/25) + SizeY*2/25){
-	    Stape = 0;
-	  }
+          }
+          else if (sourisX > (6 * SizeX / 8) + SizeX / 100 &&
+                   sourisX < (6 * SizeX / 8) + SizeX / 100 + SizeX / 9 &&
+                   sourisY > (SizeY / 8) + (SizeY * 10 / 25) &&
+                   sourisY < (SizeY / 8) + (SizeY * 10 / 25) + SizeY * 2 / 25)
+          {
+            Stape = 0;
+          }
         }
         else if (event.button.button == SDL_BUTTON_RIGHT)
         {
