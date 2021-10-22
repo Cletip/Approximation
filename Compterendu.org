@@ -110,9 +110,9 @@ On pose donc $Y = ln(y)$, $X = x$, $A=d*ln(e)$ et $B = ln(c)$.
 
 
 
-* Présentation des programmes commentés
+* TODO Présentation des programmes commentés
 
-Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables [[file:lagrange.c][ici pour la méthode de Lagrange]], ainsi qu'[[file:newton.c][ici pour la méthode Newton]].
+Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables .
 
 ** Nos structures
 
