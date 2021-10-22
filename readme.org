@@ -1,0 +1,21 @@
+* Readme
+
+** Librairy nécessaire à la compilation :
+
+SDL2 :
+
+https://wiki.libsdl.org/Installation
+
+
+
+SDL2_ttf :
+
+libsdl2-ttf-dev
+
+
+
+** Pour obtenir un Doxygen :
+
+Il suffit de faire la commande /make doxy/, puis d'ouvrir le fichier *htlm/index.html*.
+
+Pour plus d'info, aller voir le compte rendu.
