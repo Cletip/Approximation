@@ -18,6 +18,7 @@
 
 
 
+
 #+BEGIN_EXPORT latex
 %chargement de la page de garde
 \input{$PWD/Latex/Setupfile/Pagedegarde/Pagedegarde1/pagedegarde1.org}
@@ -36,69 +37,77 @@
 
 ** Cas général des méthodes
 
-Pour les deux méthodes, le but est le même, trouver une équation avec un nombre de points $n+1$ de la forme :
+Pour les deux méthodes, le but est le même, trouver l'équation d'une droite avec un nombre de points $n$ de la forme :
 
 
-\[ P(x)= a_0 + a_1x + a_2x^2 + … + a_nx^n  \]
-
-
-
-
-** Méthode de Lagrange
+\[ y= ax + b  \]
 
 
 
 
-La méthode de Lagrange se base sur la formule suivante :
+** Méthode des droites de regression
 
-\[ L(x)=\sum _{i=0}^{n}y_{i}\left(\prod _{i=0,i\neq j}^{n}{\frac {x-x_{j}}{x_{i}-x_{j}}}\right) \]
+Pour cette méthode, nous devons utiliser la formule du cours suivante (Où $\bar{x}$ et $\bar{y}$ sont les moyenne respective de $x$ et de $y$.):
 
-Que l'on peut aussi écrire sous cette forme :
-
-\[ L(X)=\sum _{i=0}^{n}y_{i}l_{i}(X)} \]
-
-Avec $li$ définie tel que :
-
-\[li = \prod _{i=0,i\neq j}^{n}{\frac {x-x_{j}}{x_{i}-x_{j}}}\right \]
+\[ a =\frac{\overline{xy}-\bar{x}\bar{y}}{\bar(x^2)-(\bar{x}^2)}  \]
 
 
+et
 
-** Méthode de Newton
-
-
-Pour la méthode de newton, nous devons appliquer cette formule :
-
-\[   N(x)=\sum _{i=0}^{k}a_{i}n_{i}(x)}\]
-
-Où $n$ sont les polynômes de Newton définis de la manière
-suivante :
-
-\[ n_{i}(x)=\prod _{0\leq j < i}(x-x_{j})\qquad i=0,\ldots ,n  \]
-
-et $a_i$ les différences divisées définit tel que
+\[ b= \bar{y}-a\bar{x}  \]
 
 
 
+*** Question 1
 
-#+begin_export latex
-\begin{align*}
-a_0 &= y_1 \\
-    a_1 &= \frac{y_2 - y_1}{x_2 - x_1}\\
-    ...\\
-    a_k &= \nabla^{k}y_{k+1}\\
-    ...\\
-    a_{n-1} &= \nabla^{n-1}y_{n}
-\end{align*}
-#+end_export
+Nous appliquons la formule du cours donnée précédemment.
 
-#+begin_center
-Avec pour $j > i$ ,$\nabla^k y_j = \frac{\nabla^{k-1} y_j - \nabla^{k-1}y_{k}}{x_j - x_{k}}$
-#+end_center
+ 
+*** Question 2
+
+Nous appliquerons la même méthode que la méthode à la [[*Question 1][Question 1]], sauf que nous le faisons deux fois pour chaque partie du tableau.
+Puis nous effectuons la moyenne des deux droites pour en obtenir une.
+
+** Méthode des ajustements
+
+Pour nous permettre de trouver une droite, nous devons modifier les deux équations pour arriver à une autre équation de la forme.
+
+\[ Y = AX + B  \]
+
+Nous allons donc modifier les équations initiales.
+
+Suite à cela, nous appliquerons la [[*Méthode des droites de regression][méthode des droites de regression]] avec les variables correspondantes.
+
+*** Question 3
 
 
-Conclusion : Nous devons effectuer cette formule :
+	    \begin{align*}
+	y &= ax^b \\
+\\
+	    ln(y)  &= ln(a) + ln(a^b)\\
+\\
+	ln(y) &= ln(a) + b*ln(a)\\
+	\end{align*}
 
-\[  N(x)=[y_{0}]+[y_{0},y_{1}](x-x_{0})+\ldots +[y_{0},\ldots ,y_{n}](x-x_{0})\ldots (x-x_{n}).}  \]
+
+On pose donc $Y = ln(y)$, $X = ln(x)$, $A=b$ et $B = ln(a)$.
+
+
+
+*** Question 4
+
+	    \begin{align*}
+	y &= ce^{dx} \\
+\\
+	    ln(y)  &= ln(c) + ln(e^{dx})\\
+\\
+	ln(y) &= ln(c) + d*x*ln(e)\\
+	\end{align*}
+
+On pose donc $Y = ln(y)$, $X = x$, $A=d*ln(e)$ et $B = ln(c)$.
+
+
+
 
 
 * Présentation des programmes commentés

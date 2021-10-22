@@ -1,4 +1,4 @@
-% Created 2021-10-22 Fri 09:12
+% Created 2021-10-22 Fri 11:22
 % Intended LaTeX compiler: pdflatex
 \documentclass[letter]{article}
                       \usepackage[utf8]{inputenc}
@@ -38,83 +38,98 @@
 \newpage
 
 \section{Rappel rapide des méthodes}
-\label{sec:org0fd6323}
+\label{sec:org67dd9eb}
 
 
 \subsection{Cas général des méthodes}
-\label{sec:org8be7e0e}
+\label{sec:orgf0652df}
 
-Pour les deux méthodes, le but est le même, trouver une équation avec un nombre de points \(n+1\) de la forme :
-
-
-\[ P(x)= a_0 + a_1x + a_2x^2 + … + a_nx^n  \]
+Pour les deux méthodes, le but est le même, trouver l'équation d'une droite avec un nombre de points \(n\) de la forme :
 
 
-
-
-\subsection{Méthode de Lagrange}
-\label{sec:org1f0de7a}
+\[ y= ax + b  \]
 
 
 
 
-La méthode de Lagrange se base sur la formule suivante :
+\subsection{Méthode des droites de regression}
+\label{sec:orgde0db96}
 
-\[ L(x)=\sum _{i=0}^{n}y_{i}\left(\prod _{i=0,i\neq j}^{n}{\frac {x-x_{j}}{x_{i}-x_{j}}}\right) \]
+Pour cette méthode, nous devons utiliser la formule du cours suivante (Où \(\bar{x}\) et \(\bar{y}\) sont les moyenne respective de \(x\) et de \(y\).):
 
-Que l'on peut aussi écrire sous cette forme :
-
-\[ L(X)=\sum _{i=0}^{n}y_{i}l_{i}(X)} \]
-
-Avec \(li\) définie tel que :
-
-\[li = \prod _{i=0,i\neq j}^{n}{\frac {x-x_{j}}{x_{i}-x_{j}}}\right \]
+\[ a =\frac{\overline{xy}-\bar{x}\bar{y}}{\bar(x^2)-(\bar{x}^2)}  \]
 
 
+et
 
-\subsection{Méthode de Newton}
-\label{sec:orgaa25be4}
+\[ b= \bar{y}-a\bar{x}  \]
 
 
-Pour la méthode de newton, nous devons appliquer cette formule :
 
-\[   N(x)=\sum _{i=0}^{k}a_{i}n_{i}(x)}\]
-
-Où \(n\) sont les polynômes de Newton définis de la manière
-suivante :
-
-\[ n_{i}(x)=\prod _{0\leq j < i}(x-x_{j})\qquad i=0,\ldots ,n  \]
-
-et \(a_i\) les différences divisées définit tel que
+\subsubsection{Question 1}
+\label{sec:org5ab8c70}
 
 
 
 
-\begin{align*}
-a_0 &= y_1 \\
-    a_1 &= \frac{y_2 - y_1}{x_2 - x_1}\\
-    ...\\
-    a_k &= \nabla^{k}y_{k+1}\\
-    ...\\
-    a_{n-1} &= \nabla^{n-1}y_{n}
-\end{align*}
+\subsubsection{Question 2}
+\label{sec:orgb3617cc}
 
-\begin{center}
-Avec pour \(j > i\) ,\(\nabla^k y_j = \frac{\nabla^{k-1} y_j - \nabla^{k-1}y_{k}}{x_j - x_{k}}\)
-\end{center}
+Nous appliquerons la même méthode que la méthode à la \hyperref[sec:org5ab8c70]{Question 1}.
 
 
-Conclusion : Nous devons effectuer cette formule :
+\subsection{Méthode des ajustements}
+\label{sec:orga5821cb}
 
-\[  N(x)=[y_{0}]+[y_{0},y_{1}](x-x_{0})+\ldots +[y_{0},\ldots ,y_{n}](x-x_{0})\ldots (x-x_{n}).}  \]
+Pour nous permettre de trouver une droite, nous devons modifier les deux équations pour arriver à une autre équation de la forme.
+
+\[ Y = AX + B  \]
+
+Nous allons donc modifier les équations initiales.
+
+Suite à cela, nous appliquerons la \hyperref[sec:orgde0db96]{méthode des droites de regression} avec les variables correspondantes.
+
+\subsubsection{Question 3}
+\label{sec:org75e86c0}
+
+
+	    \begin{align*}
+	y &= ax^b \\
+\\
+	    ln(y)  &= ln(a) + ln(a^b)\\
+\\
+	ln(y) &= ln(a) + b*ln(a)\\
+	\end{align*}
+
+
+On pose donc \(Y = ln(y)\), \(X = ln(x)\), \(A=b\) et \(B = ln(a)\).
+
+
+
+\subsubsection{Question 4}
+\label{sec:orga54c14a}
+
+	    \begin{align*}
+	y &= ce^{dx} \\
+\\
+	    ln(y)  &= ln(c) + ln(e^{dx})\\
+\\
+	ln(y) &= ln(c) + d*x*ln(e)\\
+	\end{align*}
+
+On pose donc \(Y = ln(y)\), \(X = x\), \(A=d*ln(e)\) et \(B = ln(c)\).
+
+
+
+
 
 \section{Présentation des programmes commentés}
-\label{sec:orge5bfeda}
+\label{sec:org9391dc4}
 
 Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables \href{lagrange.c}{ici pour la méthode de Lagrange}, ainsi qu'\href{newton.c}{ici pour la méthode Newton}.
 
 \subsection{Nos structures}
-\label{sec:orgd5a25a0}
+\label{sec:org84b6386}
 
 Nous avons choisis d'utiliser plusieurs structures pour plusieurs cas :
 \begin{enumerate}
@@ -126,7 +141,7 @@ Nous avons choisis d'utiliser plusieurs structures pour plusieurs cas :
 \end{enumerate}
 
 \subsubsection{Listes/Points}
-\label{sec:orgba548d2}
+\label{sec:org35af55f}
 
 Le code pour les listes ainsi que pour les points est trouvable \href{listePoint.c}{ici}.
 
@@ -178,7 +193,7 @@ De plus, les fonctions usuelles des listes sont également créé :
 
 
 \subsubsection{Polynômes}
-\label{sec:orga2bcf65}
+\label{sec:org86d9d0e}
 
 Le code pour les polynôme est trouvable \href{polynome.c}{ici}. 
 
@@ -252,7 +267,7 @@ return poly;
 
 
 \subsection{Présentation de la méthode de Lagrange}
-\label{sec:org3abb5ed}
+\label{sec:orge2595cb}
 
 Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux étapes : 
 \begin{enumerate}
@@ -261,7 +276,7 @@ Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux é
 \end{enumerate}
 
 \subsubsection{Présentation de la fonction \emph{calculLi}}
-\label{sec:org4907342}
+\label{sec:org43c5b56}
 
 Suite à l'initialisation des variables nécessaires, cette fonction permet le calcul de Li, avec  \(i\in [0, 1, ... , k]\).
 Les deux principales difficultés sont les suivantes :
@@ -303,10 +318,10 @@ return Li;
 \end{verbatim}
 
 \subsubsection{Présentation de la fonction \emph{calculLagrange}}
-\label{sec:orge0494b6}
+\label{sec:org53f9b49}
 
-Cette fonction permet de faire la somme des différents Li trouvé dans la fonction \hyperref[sec:org4907342]{\emph{calculLi}}.
-En effet, pour compléter la méthode de Lagrange, il faut faire une boucle \emph{for} qui fait une somme des \(y_i\) multiplier par \hyperref[sec:org4907342]{\emph{calculLi}} pour l'itération \(i\).
+Cette fonction permet de faire la somme des différents Li trouvé dans la fonction \hyperref[sec:org43c5b56]{\emph{calculLi}}.
+En effet, pour compléter la méthode de Lagrange, il faut faire une boucle \emph{for} qui fait une somme des \(y_i\) multiplier par \hyperref[sec:org43c5b56]{\emph{calculLi}} pour l'itération \(i\).
 
 \begin{verbatim}
 
@@ -336,7 +351,7 @@ return fonction;
 Il ne reste plus qu'à retourner le polynôme trouver pour pouvoir l'afficher ou bien même l'utiliser dans SDL.
 
 \subsection{Présentation de la méthode de Newton}
-\label{sec:orgaefcc87}
+\label{sec:org656c7a8}
 
 
 Le code pour l'interpolation newtonienne est disponible \href{newton.c}{ici.}
@@ -397,13 +412,13 @@ Solution = AdaptePoly(Solution);
 Il ne nous reste plus qu'à retourner le polynôme obtenu pour pouvoir l'afficher  dans le terminal, où sous une courbe avec SDL.
 
 \section{Présentation des Jeux d'essais avec commentaires}
-\label{sec:org6d4d824}
+\label{sec:orgdaf26d2}
 
 Les différents résultats sont disponibles en faisant les test grâces au fonctionnalité implémenter dans le programme.
 
 
 \subsection{Densité de l'eau en fonction de la température de l'air :}
-\label{sec:org45bea90}
+\label{sec:org6042cba}
 
 Liste de points avec une précision de l'ordre de 10\textsuperscript{-5}.
 Difficultés potentielles : précisions.
@@ -415,7 +430,7 @@ Résultats : Les deux polynômes sont les mêmes et les calculs sont les bons.
 
 
 \subsection{Les trois séries :}
-\label{sec:org2293576}
+\label{sec:org1c0f6a8}
 
 Suites de points normaux.
 Difficultés potentielles : aucune, sauf pour le dernier qui ne pourra sûrement pas être calculé (car ce n'est pas une suite de points avec différents \(x\))
@@ -433,7 +448,7 @@ Résultats :
 
 
 \subsection{Dépenses mensuelles et revenus :}
-\label{sec:org911003c}
+\label{sec:orged11570}
 
 Pour ces données, il y a un grand nombre de données, ainsi qu'un axe des x qui commence avec de "grandes valeurs".
 
@@ -444,7 +459,7 @@ Résultats :Les polynômes ont soit des coefficients très importants, soit des 
 
 
 \subsection{Commentaire global}
-\label{sec:org51ff91d}
+\label{sec:orge677ab5}
 
 Pour ses différents jeux d'essais, on peut constater plusieurs choses :
 
@@ -463,12 +478,12 @@ Vous pouvez, grâce au programme, afficher les polynômes avec une grande ou une
 
 \newpage
 \section{SDL}
-\label{sec:org621e065}
+\label{sec:org4ef076e}
 
 Le code qui nous permet de gérer la fenêtre SDL est disponible \href{render.c}{ici}.
 
 \subsection{Début}
-\label{sec:orgaa267a8}
+\label{sec:orgeedc9e2}
 
 Pour démarrer SDL, nous devons initialiser de nombreuses variables, comme par exemple :
 
@@ -485,10 +500,10 @@ Pour démarrer SDL, nous devons initialiser de nombreuses variables, comme par e
 
 
 \subsection{Affichage et fonctionnalité}
-\label{sec:org173300b}
+\label{sec:orge29ba0e}
 
 \subsubsection{Affichage}
-\label{sec:org1805b6d}
+\label{sec:org873bb80}
 
 Pour effectuer l'affichage d'une fenêtre SDL, nous devons passer par une boucle \emph{while}.
 
@@ -510,7 +525,7 @@ Puis, nous avons aussi un cas de débogage. En effet, si l'on n'est pas entré d
 
 
 \subsubsection{Fonctionnalités :}
-\label{sec:org81ad2aa}
+\label{sec:orgf4f2998}
 
 Divers fonctionnalités sont présentes :
 Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant l'interpolation lagrangienne et newtonienne, ainsi que la liste de points à droite.
@@ -524,12 +539,12 @@ Enfin, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
 
 
 \subsection{Fin de SDL}
-\label{sec:org7f41e7c}
+\label{sec:org43b5c8c}
 
 La fonction \emph{end-sdl} nous permet de fermet la fenêtre SDL proprement, ainsi que faire les opérations nécessaires pour vider la mémoire qui a besoin d'être libéré.
 
 \section{Conclusion sur les méthodes}
-\label{sec:org509595d}
+\label{sec:org194d7b8}
 
 Nous pourrions sûrement améliorer notre programme pour Newton : en effet, d'après la définition des différences divisées, lorsque l'on ajoute de nouveaux points, nous ne sommes pas obligés de recalculer l'ensemble des coefficients du polynôme.
 
