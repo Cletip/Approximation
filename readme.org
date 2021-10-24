@@ -19,3 +19,5 @@ libsdl2-ttf-dev
 Il suffit de faire la commande /make doxy/, puis d'ouvrir le fichier *htlm/index.html*.
 
 Pour plus d'info, aller voir le compte rendu.
+
+Test
