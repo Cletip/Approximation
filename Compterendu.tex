@@ -1,4 +1,4 @@
-% Created 2021-10-22 Fri 11:22
+% Created 2021-10-26 Tue 08:54
 % Intended LaTeX compiler: pdflatex
 \documentclass[letter]{article}
                       \usepackage[utf8]{inputenc}
@@ -38,11 +38,11 @@
 \newpage
 
 \section{Rappel rapide des méthodes}
-\label{sec:org67dd9eb}
+\label{sec:org72f685e}
 
 
 \subsection{Cas général des méthodes}
-\label{sec:orgf0652df}
+\label{sec:orgad6ac0e}
 
 Pour les deux méthodes, le but est le même, trouver l'équation d'une droite avec un nombre de points \(n\) de la forme :
 
@@ -52,8 +52,8 @@ Pour les deux méthodes, le but est le même, trouver l'équation d'une droite a
 
 
 
-\subsection{Méthode des droites de regression}
-\label{sec:orgde0db96}
+\subsection{Méthode des droites de régression}
+\label{sec:org682519e}
 
 Pour cette méthode, nous devons utiliser la formule du cours suivante (Où \(\bar{x}\) et \(\bar{y}\) sont les moyenne respective de \(x\) et de \(y\).):
 
@@ -67,19 +67,19 @@ et
 
 
 \subsubsection{Question 1}
-\label{sec:org5ab8c70}
+\label{sec:orgbd2229a}
 
-
+Nous appliquons la formule du cours donnée précédemment.
 
 
 \subsubsection{Question 2}
-\label{sec:orgb3617cc}
+\label{sec:org1a79d34}
 
-Nous appliquerons la même méthode que la méthode à la \hyperref[sec:org5ab8c70]{Question 1}.
-
+Nous appliquerons la même méthode que la méthode à la \hyperref[sec:orgbd2229a]{Question 1}, sauf que nous le faisons deux fois pour chaque partie du tableau.
+Puis nous effectuons la moyenne des deux droites pour en obtenir une.
 
 \subsection{Méthode des ajustements}
-\label{sec:orga5821cb}
+\label{sec:orge506b10}
 
 Pour nous permettre de trouver une droite, nous devons modifier les deux équations pour arriver à une autre équation de la forme.
 
@@ -87,10 +87,10 @@ Pour nous permettre de trouver une droite, nous devons modifier les deux équati
 
 Nous allons donc modifier les équations initiales.
 
-Suite à cela, nous appliquerons la \hyperref[sec:orgde0db96]{méthode des droites de regression} avec les variables correspondantes.
+Suite à cela, nous appliquerons la \hyperref[sec:org682519e]{méthode des droites de régression} avec les variables correspondantes.
 
 \subsubsection{Question 3}
-\label{sec:org75e86c0}
+\label{sec:orgb57681e}
 
 
 	    \begin{align*}
@@ -107,7 +107,7 @@ On pose donc \(Y = ln(y)\), \(X = ln(x)\), \(A=b\) et \(B = ln(a)\).
 
 
 \subsubsection{Question 4}
-\label{sec:orga54c14a}
+\label{sec:orgb9ab7f5}
 
 	    \begin{align*}
 	y &= ce^{dx} \\
@@ -124,25 +124,29 @@ On pose donc \(Y = ln(y)\), \(X = x\), \(A=d*ln(e)\) et \(B = ln(c)\).
 
 
 \section{Présentation des programmes commentés}
-\label{sec:org9391dc4}
+\label{sec:orgbf44e75}
 
-Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables \href{lagrange.c}{ici pour la méthode de Lagrange}, ainsi qu'\href{newton.c}{ici pour la méthode Newton}.
+Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables \href{ajuste.c}{ici pour la méthode des ajustements} et \href{DroiteReg.c}{ici pour la méthode des régréssions}.
 
 \subsection{Nos structures}
-\label{sec:org84b6386}
+\label{sec:org8329524}
 
 Nous avons choisis d'utiliser plusieurs structures pour plusieurs cas :
 \begin{enumerate}
-\item La première, la structure \emph{point}, qui est utilisé partout. En effet, cette structure nous permet de stocker les différents points qui nous sont nécessaire pour trouver un polynôme respectant l'interpolation.
+\item La première, la structure \emph{point}, qui est utilisé partout. En effet, cette structure nous permet de stocker les différents points qui nous sont nécessaire pour trouver les droites respectant la diagonalisation.
 \item Puis, la structure \emph{Maillon}. Cette structure est essentielle pour une chose : former des listes, ce qui nous permet d'ajouter un nombre de points indéfinis au départ, puis d'en rajouter, supprimer, etc, sans perdre de la mémoire.
 \item La structure \emph{Liste}, qui est la suite logique de structure \emph{Maillon}.
-\item La structure polynôme : celle-ci est particulière, une partie lui est entièrement consacré dans la suite du document.
+\item La structure polynôme, qui contrairement au précédent tp, sera uniquement de degrès 0 ou 1.
 \item Enfin, même si ce n'est pas vraiment une structure, une fonction s'appelant \emph{transformefloatenpoly} transforme une liste de points en un tableau, permettant alors d'y accéder plus rapidement et facilement.
 \end{enumerate}
 
 \subsubsection{Listes/Points}
-\label{sec:org35af55f}
+\label{sec:org3b0c77a}
 
+
+\begin{enumerate}
+\item Présentation du code général
+\label{sec:org8b3ec69}
 Le code pour les listes ainsi que pour les points est trouvable \href{listePoint.c}{ici}.
 
 Pour former un point, nous avons tout simplement besoin d'un x et d'un y associé à celui-ci.
@@ -191,9 +195,25 @@ De plus, les fonctions usuelles des listes sont également créé :
 \end{enumerate}
 
 
+\item Présentation des fonctions utilisées pour résoudre le problème de départ
+\label{sec:org233b77e}
+
+Les différentes fonctions utilisées sont disponible dans la fin de \href{listePoint.c}{ici}.
+
+\begin{enumerate}
+\item moyXY, qui nous permet de faire la moyenne des X et des Y
+\item moyX et moyY, qui nous permet de faire la moyenne
+\item moyXmoyY
+\item moyXcar
+\item carmoyX
+\item lnListe
+\item moyXY2tab
+\end{enumerate}
+\end{enumerate}
 
 \subsubsection{Polynômes}
-\label{sec:org86d9d0e}
+\label{sec:org116fa8b}
+
 
 Le code pour les polynôme est trouvable \href{polynome.c}{ici}. 
 
@@ -266,8 +286,10 @@ return poly;
 
 
 
-\subsection{Présentation de la méthode de Lagrange}
-\label{sec:orge2595cb}
+
+
+\subsection{{\bfseries\sffamily TODO} Présentation de la méthode droites de régression}
+\label{sec:org0de4b8c}
 
 Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux étapes : 
 \begin{enumerate}
@@ -276,7 +298,7 @@ Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux é
 \end{enumerate}
 
 \subsubsection{Présentation de la fonction \emph{calculLi}}
-\label{sec:org43c5b56}
+\label{sec:org3a52d98}
 
 Suite à l'initialisation des variables nécessaires, cette fonction permet le calcul de Li, avec  \(i\in [0, 1, ... , k]\).
 Les deux principales difficultés sont les suivantes :
@@ -318,10 +340,10 @@ return Li;
 \end{verbatim}
 
 \subsubsection{Présentation de la fonction \emph{calculLagrange}}
-\label{sec:org53f9b49}
+\label{sec:org08b3af0}
 
-Cette fonction permet de faire la somme des différents Li trouvé dans la fonction \hyperref[sec:org43c5b56]{\emph{calculLi}}.
-En effet, pour compléter la méthode de Lagrange, il faut faire une boucle \emph{for} qui fait une somme des \(y_i\) multiplier par \hyperref[sec:org43c5b56]{\emph{calculLi}} pour l'itération \(i\).
+Cette fonction permet de faire la somme des différents Li trouvé dans la fonction \hyperref[sec:org3a52d98]{\emph{calculLi}}.
+En effet, pour compléter la méthode de Lagrange, il faut faire une boucle \emph{for} qui fait une somme des \(y_i\) multiplier par \hyperref[sec:org3a52d98]{\emph{calculLi}} pour l'itération \(i\).
 
 \begin{verbatim}
 
@@ -350,14 +372,34 @@ return fonction;
 
 Il ne reste plus qu'à retourner le polynôme trouver pour pouvoir l'afficher ou bien même l'utiliser dans SDL.
 
-\subsection{Présentation de la méthode de Newton}
-\label{sec:org656c7a8}
+\subsection{Présentation de la méthode des ajustements}
+\label{sec:orgaf1f6ec}
+
+Le code pour la méthode des ajustements est disponible \href{ajuste.c}{ici}.
 
 
-Le code pour l'interpolation newtonienne est disponible \href{newton.c}{ici.}
+Pour la résolution par la méthode des ajustement, et après avoir résolu l'équation du type \(Y = AX + B\), nous commençons tout d'abord, pour les deux méthodes, de transformer notre liste en tableau, ainsi que de créer le polynôme de degrés 1.
+Puis, grâce à la fonction \emph{lnListe}, nous créons un second tableau qui contiendra les points avec application de la fonction logarithme (car on a posé \(Y = ln(y)\), \(X = ln(x)\), \(A=b\) et \(B = ln(a)\) pour la question 3 et \(Y = ln(y)\), \(X = x\), \(A=d*ln(e)\) et \(B = ln(c)\) pour la question 4). 
 
 
-Pour la résolution par Newton, nous commençons tout d'abord par initialiser un tableau de la taille adéquate pour nous permettre de stocker les différences divisées.
+\begin{verbatim}
+
+polynome *P = creePolynome(1);
+int n = ListLenght(listedepoint);
+float **Tnormal = ListeToTabsPoints(listedepoint);
+float **Tln = lnListe(Tnormal, n);
+
+\end{verbatim}
+
+
+
+\subsubsection{Question 3 (Exponentiel)}
+\label{sec:orgbe1608f}
+
+\subsubsection{Question 4 (Puissance)}
+\label{sec:org93ac5d0}
+
+
 
 \begin{verbatim}
 
@@ -412,13 +454,13 @@ Solution = AdaptePoly(Solution);
 Il ne nous reste plus qu'à retourner le polynôme obtenu pour pouvoir l'afficher  dans le terminal, où sous une courbe avec SDL.
 
 \section{Présentation des Jeux d'essais avec commentaires}
-\label{sec:orgdaf26d2}
+\label{sec:org646d02b}
 
 Les différents résultats sont disponibles en faisant les test grâces au fonctionnalité implémenter dans le programme.
 
 
 \subsection{Densité de l'eau en fonction de la température de l'air :}
-\label{sec:org6042cba}
+\label{sec:orgf2cd533}
 
 Liste de points avec une précision de l'ordre de 10\textsuperscript{-5}.
 Difficultés potentielles : précisions.
@@ -430,7 +472,7 @@ Résultats : Les deux polynômes sont les mêmes et les calculs sont les bons.
 
 
 \subsection{Les trois séries :}
-\label{sec:org1c0f6a8}
+\label{sec:org7e19b3f}
 
 Suites de points normaux.
 Difficultés potentielles : aucune, sauf pour le dernier qui ne pourra sûrement pas être calculé (car ce n'est pas une suite de points avec différents \(x\))
@@ -448,7 +490,7 @@ Résultats :
 
 
 \subsection{Dépenses mensuelles et revenus :}
-\label{sec:orged11570}
+\label{sec:orgc24ea3b}
 
 Pour ces données, il y a un grand nombre de données, ainsi qu'un axe des x qui commence avec de "grandes valeurs".
 
@@ -459,7 +501,7 @@ Résultats :Les polynômes ont soit des coefficients très importants, soit des 
 
 
 \subsection{Commentaire global}
-\label{sec:orge677ab5}
+\label{sec:org458c2ac}
 
 Pour ses différents jeux d'essais, on peut constater plusieurs choses :
 
@@ -478,12 +520,12 @@ Vous pouvez, grâce au programme, afficher les polynômes avec une grande ou une
 
 \newpage
 \section{SDL}
-\label{sec:org4ef076e}
+\label{sec:orgf7f0c61}
 
 Le code qui nous permet de gérer la fenêtre SDL est disponible \href{render.c}{ici}.
 
 \subsection{Début}
-\label{sec:orgeedc9e2}
+\label{sec:orgece06cf}
 
 Pour démarrer SDL, nous devons initialiser de nombreuses variables, comme par exemple :
 
@@ -500,10 +542,10 @@ Pour démarrer SDL, nous devons initialiser de nombreuses variables, comme par e
 
 
 \subsection{Affichage et fonctionnalité}
-\label{sec:orge29ba0e}
+\label{sec:org05fb25c}
 
 \subsubsection{Affichage}
-\label{sec:org873bb80}
+\label{sec:org9a912ae}
 
 Pour effectuer l'affichage d'une fenêtre SDL, nous devons passer par une boucle \emph{while}.
 
@@ -525,7 +567,7 @@ Puis, nous avons aussi un cas de débogage. En effet, si l'on n'est pas entré d
 
 
 \subsubsection{Fonctionnalités :}
-\label{sec:orgf4f2998}
+\label{sec:org85eb6ea}
 
 Divers fonctionnalités sont présentes :
 Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant l'interpolation lagrangienne et newtonienne, ainsi que la liste de points à droite.
@@ -539,12 +581,12 @@ Enfin, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
 
 
 \subsection{Fin de SDL}
-\label{sec:org43b5c8c}
+\label{sec:orga3a49ea}
 
 La fonction \emph{end-sdl} nous permet de fermet la fenêtre SDL proprement, ainsi que faire les opérations nécessaires pour vider la mémoire qui a besoin d'être libéré.
 
 \section{Conclusion sur les méthodes}
-\label{sec:org194d7b8}
+\label{sec:org61f6bbe}
 
 Nous pourrions sûrement améliorer notre programme pour Newton : en effet, d'après la définition des différences divisées, lorsque l'on ajoute de nouveaux points, nous ne sommes pas obligés de recalculer l'ensemble des coefficients du polynôme.
 

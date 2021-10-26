@@ -5,7 +5,6 @@ polynome *exponentiel(Liste listedepoint)
 
   polynome *P = creePolynome(1);
   int n = ListLenght(listedepoint);
-
   float **Tnormal = ListeToTabsPoints(listedepoint);
   float **Tln = lnListe(Tnormal, n);
 

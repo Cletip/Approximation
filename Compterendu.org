@@ -45,7 +45,7 @@ Pour les deux méthodes, le but est le même, trouver l'équation d'une droite a
 
 
 
-** Méthode des droites de regression
+** Méthode des droites de régression
 
 Pour cette méthode, nous devons utiliser la formule du cours suivante (Où $\bar{x}$ et $\bar{y}$ sont les moyenne respective de $x$ et de $y$.):
 
@@ -76,7 +76,7 @@ Pour nous permettre de trouver une droite, nous devons modifier les deux équati
 
 Nous allons donc modifier les équations initiales.
 
-Suite à cela, nous appliquerons la [[*Méthode des droites de regression][méthode des droites de regression]] avec les variables correspondantes.
+Suite à cela, nous appliquerons la [[*Méthode des droites de régression][méthode des droites de régression]] avec les variables correspondantes.
 
 *** Question 3
 
@@ -110,21 +110,23 @@ On pose donc $Y = ln(y)$, $X = x$, $A=d*ln(e)$ et $B = ln(c)$.
 
 
 
-* TODO Présentation des programmes commentés
+* Présentation des programmes commentés
 
-Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables .
+Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables [[file:ajuste.c][ici pour la méthode des ajustements]] et [[file:DroiteReg.c][ici pour la méthode des régréssions]].
 
 ** Nos structures
 
 Nous avons choisis d'utiliser plusieurs structures pour plusieurs cas :
-1. La première, la structure /point/, qui est utilisé partout. En effet, cette structure nous permet de stocker les différents points qui nous sont nécessaire pour trouver un polynôme respectant l'interpolation.
+1. La première, la structure /point/, qui est utilisé partout. En effet, cette structure nous permet de stocker les différents points qui nous sont nécessaire pour trouver les droites respectant la diagonalisation.
 2. Puis, la structure /Maillon/. Cette structure est essentielle pour une chose : former des listes, ce qui nous permet d'ajouter un nombre de points indéfinis au départ, puis d'en rajouter, supprimer, etc, sans perdre de la mémoire.
 3. La structure /Liste/, qui est la suite logique de structure /Maillon/.
-4. La structure polynôme : celle-ci est particulière, une partie lui est entièrement consacré dans la suite du document.
+4. La structure polynôme, qui contrairement au précédent tp, sera uniquement de degrès 0 ou 1.
 5. Enfin, même si ce n'est pas vraiment une structure, une fonction s'appelant /transformefloatenpoly/ transforme une liste de points en un tableau, permettant alors d'y accéder plus rapidement et facilement.
 
 *** Listes/Points
 
+
+**** Présentation du code général
 Le code pour les listes ainsi que pour les points est trouvable [[file:listePoint.c][ici]].
 
 Pour former un point, nous avons tout simplement besoin d'un x et d'un y associé à celui-ci.
@@ -171,8 +173,20 @@ De plus, les fonctions usuelles des listes sont également créé :
 12. ViderListe
    
 
+**** Présentation des fonctions utilisées pour résoudre le problème de départ
+
+Les différentes fonctions utilisées sont disponible dans la fin de [[file:listePoint.c][ici]].
+
+1. moyXY, qui nous permet de faire la moyenne des X et des Y
+2. moyX et moyY, qui nous permet de faire la moyenne 
+3. moyXmoyY
+4. moyXcar
+5. carmoyX
+6. lnListe
+7. moyXY2tab
 
 *** Polynômes
+
 
 Le code pour les polynôme est trouvable [[file:polynome.c][ici]]. 
 
@@ -243,7 +257,9 @@ Nous avons également fait les diverses fonctions de bases :
 
 
 
-** Présentation de la méthode de Lagrange
+
+
+** TODO Présentation de la méthode droites de régression
 
 Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux étapes : 
 1. D'abord, calculer Li, avec une fonction /calculLi/
@@ -320,67 +336,95 @@ En effet, pour compléter la méthode de Lagrange, il faut faire une boucle /for
 
 Il ne reste plus qu'à retourner le polynôme trouver pour pouvoir l'afficher ou bien même l'utiliser dans SDL.
 
-** Présentation de la méthode de Newton
+** Présentation de la méthode des ajustements
+
+Le code pour la méthode des ajustements est disponible [[file:ajuste.c][ici]].
 
 
-Le code pour l'interpolation newtonienne est disponible [[file:newton.c][ici.]]
+Pour la résolution par la méthode des ajustement, et après avoir résolu l'équation du type $Y = AX + B$, nous commençons tout d'abord, pour les deux méthodes, de transformer notre liste en tableau, ainsi que de créer le polynôme de degrés 1.
+Puis, grâce à la fonction /lnListe/, nous créons un second tableau qui contiendra les points avec application de la fonction logarithme (car on a posé $Y = ln(y)$, $X = ln(x)$, $A=b$ et $B = ln(a)$ pour la question 3 et $Y = ln(y)$, $X = x$, $A=d*ln(e)$ et $B = ln(c)$ pour la question 4). 
 
-
-Pour la résolution par Newton, nous commençons tout d'abord par initialiser un tableau de la taille adéquate pour nous permettre de stocker les différences divisées.
 
 #+begin_src C
   
-  long double **triangle = (long double **)malloc(sizeof(long double *) * (pointNB));
-  for(int i = 0; i < pointNB; i++){
-    triangle[i] = (long double *)malloc(sizeof(long double) * (pointNB-i));
-  }
-
+  polynome *P = creePolynome(1);
+  int n = ListLenght(listedepoint);
+  float **Tnormal = ListeToTabsPoints(listedepoint);
+  float **Tln = lnListe(Tnormal, n);
   
 #+end_src
 
-Puis, nous remplissons la première colonne avec les ordonnées des points.
 
-#+begin_src C
-for(int i = 0; i < pointNB; i++)  
-  {
-    triangle[0][i] = Points[1][i];
-  }
-  
-#+end_src
 
-Subséquemment, nous pouvons effectuer le calcul des différences divisées en appliquant la formule du cours
+*** TODO Question 3 (Exponentiel) (revoir après le bon fonctionnement des courbes)
+
+
+Nous initialisons les variables /a/ et /b/, qui seront des variables temporaires.
+
+Puis, nous calculons les moyennes de X et de Yln, pour faciliter la lecture du code et rendre le code plus facilement compréhensible.
 
 #+begin_src C
   
-  for(int i = 1; i < pointNB; i++){
-    for(int j = 0; j < pointNB-i; j++){
-      triangle[i][j] = (triangle[i-1][j+1] - triangle[i-1][0]) / (Points[0][i+j] - Points[0][i-1]);
-    }
-   }
+  float moyenneX = moyX(Tnormal, n);
+  float moyenneYln = moyY(Tln, n);
   
 #+end_src
 
+Subséquemment, nous pouvons effectuer le calcul des ajustement de la puissance appliquant la formule du cours, ainsi qu'en utilisant la formule posé précédemment.
+
+Le premier calcul sera pour calculer l'exposant présent devant x, donc d.
+
+#+begin_src C
+  
+a = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
+      (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
+  
+#+end_src
+
+Et le second sera pour la coefficient présent devant x
+
+
+#+begin_src C
  
-Enfin, nous pouvons passer à la résolution résolution finale, qui elle aussi est issue du cours.
+float temp = moyenneYln - (a * moyenneX);
+  b = exp(1) * exp(temp);
+  
+#+end_src
+ 
+Enfin, nous pouvons retourner le polynôme P.
+
+
+
+*** Question 4 (Puissance)
+
+Nous initialisons les variables /a/ et /b/, qui seront des variables temporaires.
+
+
+Subséquemment, nous pouvons effectuer le calcul des ajustement de la puissance appliquant la formule du cours, ainsi qu'en utilisant la formule posé précédemment.
+
+Le premier calcul sera pour calculer l'exposant, donc b.
+
 #+begin_src C
   
-  for(int i = 0; i < pointNB-1; i++){
-    /* créer le polynome "constant" */
-    tmp = creePolynome(2);
-    tmp->p[1] = 1;
-  
-    /* résolution de la méthode */
-    tmp->p[0] = -Points[0][pointNB - 2 - i];
-    Solution = multPolynome(Solution, tmp);
-    Solution->p[0] += triangle[pointNB-i-2][0];
-  }
-  Solution = AdaptePoly(Solution);
+  b = (moyXY(Tln, n) - moyX(Tln, n) * moyY(Tln, n)) /
+      (moyXcar(Tln, n) - carmoyX(Tln, n));
   
 #+end_src
 
-Il ne nous reste plus qu'à retourner le polynôme obtenu pour pouvoir l'afficher  dans le terminal, où sous une courbe avec SDL.
+Et le second sera pour la coefficient présent devant x
+
+
+#+begin_src C
+ 
+float temp = moyenneYnl - (b * moyenneXnl);
+  a = exp(temp);
+  
+#+end_src
+ 
+Enfin, nous pouvons retourner le polynôme P.
 
 * Présentation des Jeux d'essais avec commentaires
+
 
 Les différents résultats sont disponibles en faisant les test grâces au fonctionnalité implémenter dans le programme.
 

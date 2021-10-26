@@ -20,4 +20,4 @@ Il suffit de faire la commande /make doxy/, puis d'ouvrir le fichier *htlm/index
 
 Pour plus d'info, aller voir le compte rendu.
 
-Test
+
