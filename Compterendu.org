@@ -261,11 +261,11 @@ Nous avons également fait les diverses fonctions de bases :
 
 ** TODO Présentation de la méthode droites de régression
 
-Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux étapes : 
+Pour aborder ce problème, nous avons décidé d'aborder ce problème en x étape: 
 1. D'abord, calculer Li, avec une fonction /calculLi/
 2. Puis, grâce à la fonction /calculLi/ que l'on appelle dans la fonction /calculLagrange/, on renvoie le polynôme correspondant à l'interpolation.
 
-*** Présentation de la fonction /calculLi/
+*** Présentation de la fonction /pouet/
 
 Suite à l'initialisation des variables nécessaires, cette fonction permet le calcul de Li, avec  $i\in [0, 1, ... , k]$.
 Les deux principales difficultés sont les suivantes :
@@ -304,7 +304,7 @@ Les deux principales difficultés sont les suivantes :
   
 #+end_src
 
-*** Présentation de la fonction /calculLagrange/
+*** Présentation de la fonction /pouetttee/ **
 
 Cette fonction permet de faire la somme des différents Li trouvé dans la fonction [[*Présentation de la fonction /calculLi/][/calculLi/]].
 En effet, pour compléter la méthode de Lagrange, il faut faire une boucle /for/ qui fait une somme des $y_i$ multiplier par [[*Présentation de la fonction /calculLi/][/calculLi/]] pour l'itération $i$.
@@ -423,7 +423,7 @@ float temp = moyenneYnl - (b * moyenneXnl);
  
 Enfin, nous pouvons retourner le polynôme P.
 
-* Présentation des Jeux d'essais avec commentaires
+* TODO Présentation des Jeux d'essais avec commentaires
 
 
 Les différents résultats sont disponibles en faisant les test grâces au fonctionnalité implémenter dans le programme.
@@ -521,7 +521,7 @@ Puis, nous avons aussi un cas de débogage. En effet, si l'on n'est pas entré d
 
 
 
-*** Fonctionnalités :
+*** TODO Fonctionnalités :
 
 Divers fonctionnalités sont présentes :
 Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant l'interpolation lagrangienne et newtonienne, ainsi que la liste de points à droite.
@@ -540,8 +540,6 @@ La fonction /end-sdl/ nous permet de fermet la fenêtre SDL proprement, ainsi qu
 
 * Conclusion sur les méthodes
 
-** Site cool : [[https://math-linux.com/mathematiques/interpolation/article/interpolation-polynomiale-de-type-newton-et-differences-divisees][ici]] :noexport: 
-
 ** Le reste :ignore:
 
 Nous pourrions sûrement améliorer notre programme pour Newton : en effet, d'après la définition des différences divisées, lorsque l'on ajoute de nouveaux points, nous ne sommes pas obligés de recalculer l'ensemble des coefficients du polynôme.
@@ -553,23 +551,3 @@ En revanche, malgré la différence de programme et de méthode utilisé, les m�
 
 
 
-* Annexes  :noexport: 
-
-** Jeux de Test
-
-*** Densité de l'eau
-
-Les résultats obtenus pour Newton sont :
-
-  1.00 +  -0.94*x^(1)  +   1.62*x^(2)  +  -1.21*x^(3)  +   0.53*x^(4)  +  -0.15*x^(5)  +   0.03*x^(6)  +  -0.00*x^(7)  +   0.00*x^(8)  +  -0.00*x^(9)  +   0.00*x^(10)  +  -0.00*x^(11)  +   0.00*x^(12)  +  -0.00*x^(13)  +   0.00*x^(14)  +  -0.00*x^(15)  +   0.00*x^(16)  +  -0.00*x^(17)  +   0.00*x^(18)  +  -0.00*x^(19)
-  
-Les résultats obtenus pour Lagrange sont :
-
-  1.00 +  -0.94*x^(1)  +   1.62*x^(2)  +  -1.21*x^(3)  +   0.53*x^(4)  +  -0.15*x^(5)  +   0.03*x^(6)  +  -0.00*x^(7)  +   0.00*x^(8)  +  -0.00*x^(9)  +   0.00*x^(10)  +  -0.00*x^(11)  +   0.00*x^(12)  +  -0.00*x^(13)  +   0.00*x^(14)  +  -0.00*x^(15)  +   0.00*x^(16)  +  -0.00*x^(17)  +   0.00*x^(18)  +  -0.00*x^(19)  +   0.00*x^(20) 
-  
-*** S1
-
-
-*** S2
-*** S3
-*** Dépenses mensuelle et revenu

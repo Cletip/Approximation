@@ -17,8 +17,10 @@ polynome *exponentiel(Liste listedepoint)
       (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
   float temp = moyenneYln - (a * moyenneX);
   b = exp(1) * exp(temp);
-  P->p[1] = b;
-  P->p[0] = a;
+
+  /* pas sûr si a va dans p1 ou p0 */
+  P->p[1] = a;
+  P->p[0] = b;
   return P;
 }
 
