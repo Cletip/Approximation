@@ -6,13 +6,15 @@ polynome *exponentiel(Liste listedepoint)
   polynome *P = creePolynome(1);
   int n = ListLenght(listedepoint);
   float **Tnormal = ListeToTabsPoints(listedepoint);
-  float **Tln = lnListe(Tnormal, n);
+  float **Tln = lnListetotab(Tnormal, n);
 
   float moyenneX = moyX(Tnormal, n);
   float moyenneYln = moyY(Tln, n);
-  float a;
   float b;
+  float a;
 
+  /* TODO, reregarder, mais normalement c'est juste, du moins je vois
+     pas la faute */
   a = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
       (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
   float temp = moyenneYln - (a * moyenneX);
@@ -29,7 +31,7 @@ polynome *puissance(Liste listedepoint)
   polynome *P = creePolynome(1);
   int n = ListLenght(listedepoint);
   float **Tnormal = ListeToTabsPoints(listedepoint);
-  float **Tln = lnListe(Tnormal, n);
+  float **Tln = lnListetotab(Tnormal, n);
 
   float moyenneXnl = moyX(Tln, n);
   float moyenneYnl = moyY(Tln, n);

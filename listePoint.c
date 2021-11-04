@@ -310,7 +310,7 @@ double carmoyX(float **Res, int nbPoints){
    return y*y;
 }
 
-float **lnListe(float **Res, int nbPoints)
+float **lnListetotab(float **Res, int nbPoints)
 {
   float **Sol = (float **)malloc(sizeof(float *) * 2);
   Sol[0] = (float *)malloc(sizeof(float) * nbPoints);

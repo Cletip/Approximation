@@ -138,7 +138,7 @@ double moyY(float **Res, int nbPoints);
 double moyXmoyY(float **Res, int nbPoints);
 double moyXcar(float **Res, int nbPoints);
 double carmoyX(float **Res, int nbPoints);
-float **lnListe(float **Res, int nbPoints);
+float **lnListetotab(float **Res, int nbPoints);
 double moyXY2tab(float **Res, float **LnRes, int nbPoints);
 
 #endif /* LISTE_HEADER_ */
