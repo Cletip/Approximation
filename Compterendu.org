@@ -259,82 +259,62 @@ Nous avons également fait les diverses fonctions de bases :
 
 
 
-** TODO Présentation de la méthode droites de régression
+** Présentation de la méthode droites de régression
 
-Pour aborder ce problème, nous avons décidé d'aborder ce problème en x étape: 
-1. D'abord, calculer Li, avec une fonction /calculLi/
-2. Puis, grâce à la fonction /calculLi/ que l'on appelle dans la fonction /calculLagrange/, on renvoie le polynôme correspondant à l'interpolation.
+*** Simple
+Pour résoudre avec cette méthode, nous avons tout simplement effectué, grâce à nous fonctions usuelles, les calculs "normaux" pour faire une droite de régression.
 
-*** Présentation de la fonction /pouet/
-
-Suite à l'initialisation des variables nécessaires, cette fonction permet le calcul de Li, avec  $i\in [0, 1, ... , k]$.
-Les deux principales difficultés sont les suivantes :
-1. Prendre en compte le cas de la division par 0, lorsque $x_i - x_j = 0$.
-2. Réinitialiser x à chaque tour de boucle. En effet, nos fonction renvoie un nouveau pointeur, ce qui supprime x à chaque fois. Nous devons donc le réinitialiser à chaque tour dans la boucle, ce qui nous permet d'enlever la fameuse erreur "segmentation fault" !
+Nous avons également pas oublié de free nous différents tableaux.
 
 #+begin_src C
   
-  for (i = 0; i < ListLenght(points); ++i)
-  {
-    if (i == numero)
-    {
-      /* si i = numero, alors il y aurait une division par 0. On ne
-	 fait donc rien */
-    }
-    else
-    {
-      /* Création du polynôme pour les calculs */
-      polynome *x = creePolynome(1);
-      x->p[1] = 1;
-  
-      /* Calcul de la première différence */
-      polynome *y = addPolynome(x, transformefloatenpoly(-pointstab[0][i]));
-  
-      /* calcul de la multiplication par l'inverse de xnum - xi */
-      polynome *tmp = multPolynome(
-	  y,
-	  transformefloatenpoly(1 / (pointstab[0][numero] - pointstab[0][i])));
-  
-      /* multiplication par le polynôme précédemment calculé */
-      Li = multPolynome(Li, tmp);
-    }
-  }
-  
-  return Li;
+  polynome *UneDroiteReg(Liste l){
+  polynome *P = creePolynome(1);
+  int n = ListLenght(l);
+  float **Res = ListeToTabsPoints(l);
+  P->p[1] = (moyXY(Res, n) - moyX(Res, n) * moyY(Res, n))/(moyXcar(Res, n) - carmoyX(Res, n));
+  P->p[0] = moyY(Res, n) - moyX(Res, n)*((moyXY(Res, n) - moyX(Res, n) * moyY(Res, n))/(moyXcar(Res, n) - carmoyX(Res, n)));
+  free(Res[1]);free(Res[0]);free(Res);
+  return P;
+}
   
 #+end_src
 
-*** Présentation de la fonction /pouetttee/ **
+*** Double
 
-Cette fonction permet de faire la somme des différents Li trouvé dans la fonction [[*Présentation de la fonction /calculLi/][/calculLi/]].
-En effet, pour compléter la méthode de Lagrange, il faut faire une boucle /for/ qui fait une somme des $y_i$ multiplier par [[*Présentation de la fonction /calculLi/][/calculLi/]] pour l'itération $i$.
+Pour résoudre avec deux droites de régression, nous avons d'abord séparé en deux notre tableau de points. Puis, nous avons appliqué la première méthode distinctement sur les deux tableaux. Enfin, nous avons fait la moyenne de ces deux droites pour calculer la dernière droite (qui est le polynôme renvoyé).
 
 #+begin_src C
   
-    int i;
-
-  /* création du polynôme du résultatde l'interpolation  */
-  polynome *fonction = creePolynome(ListLenght(points));
-
-  /* Initialisation d'un tableau à partir d'une liste (accéder au
-     valeur plus facilement) */
-  float **pointstab;
-  pointstab = ListeToTabsPoints(points);
-
-  /* boucle for pour multiplier par yi les Li calculer dans la
-     fonction calculLi */
-  for (i = 0; i < ListLenght(points); ++i)
-  {
-    fonction = addPolynome(fonction,
-                           multPolynome(transformefloatenpoly(pointstab[1][i]),
-                                        calculLi(i, points)));
+  polynome *DeuxDroiteReg(Liste l){
+  float **Res = ListeToTabsPoints(l);
+  int n = ListLenght(l);
+  float moy = moyY(Res, n);
+  Maillon *m = l.first;
+  Liste l1 = creerListe();
+  Liste l2 = creerListe();
+  for(int i = 0; i < n; i++){
+    if(m->val.y < moy){
+      ajouteFin(&l1, m->val);
+    }else {
+      ajouteFin(&l2, m->val);
+    }
+    m = m->suiv;
   }
+  polynome *p1 = UneDroiteReg(l1);
+  polynome *p2 = UneDroiteReg(l2);
+  polynome *Ret = creePolynome(1);
+  Ret->p[0] = (p1->p[0] + p2->p[0])/2;
+  Ret->p[1] = (p1->p[1] + p2->p[1])/2;
 
-  return fonction;
+  detruireListe(l1);
+  detruireListe(l2);
+  free(Res[1]);free(Res[0]);free(Res);
+  return Ret;
+}
+
   
 #+end_src
-
-Il ne reste plus qu'à retourner le polynôme trouver pour pouvoir l'afficher ou bien même l'utiliser dans SDL.
 
 ** Présentation de la méthode des ajustements
 
@@ -426,17 +406,14 @@ Enfin, nous pouvons retourner le polynôme P.
 * TODO Présentation des Jeux d'essais avec commentaires
 
 
-Les différents résultats sont disponibles en faisant les test grâces au fonctionnalité implémenter dans le programme.
+Les différents résultats sont disponibles en faisant les test grâces aux fonctionnalités implémentées dans le programme.
 
 
-** Densité de l'eau en fonction de la température de l'air :
+** Série S
 
-Liste de points avec une précision de l'ordre de 10^-5.
-Difficultés potentielles : précisions.
+Liste de points sans difficulté particulière, mais pas dans le bon ordre.
 
-
-
-Résultats : Les deux polynômes sont les mêmes et les calculs sont les bons.
+Résultats : On peut voir que les résultats sont les bons : l'approximation à l'air (graphiquement) efficace.
 
 
 
@@ -448,11 +425,11 @@ Difficultés potentielles : aucune, sauf pour le dernier qui ne pourra sûrement
 
 Résultats : 
 
-  1. Le polynôme est le bon, aucune difficulté
+  1. Les approximations sont les bonnes, aucune difficulté.
 
-  2. Le polynôme est le bon, mais des erreurs d'approximations sont présentes. Les polynômes ne sont pas exactement les mêmes.
+  2. Les approximations sont bonnes, aucune difficulté également.
 
-  3. Ne peut pas se calculer : en effet, les points sont sur le même X. L'interpolation est donc incalculable (et infaisable).
+  3. Ne peut pas se calculer : en effet, les points sont sur le même X. Les approximations sont donc incalculables (et infaisable).
 
      
 ** Dépenses mensuelles et revenus :
@@ -465,23 +442,30 @@ Difficultés potentielles : précisions dû aux résultats importants obtenus.
 Résultats :Les polynômes ont soit des coefficients très importants, soit des coefficients presque négligeable. En revanche, on peut constater qu'il y a des approximations de calcul dans les deux méthodes. En effet, les deux polynômes finaux ne sont pas exactement les mêmes, même si ils sont tous les deux du même ordre de grandeur.
 
 
+** Série chronologique avec accroissement exponentiel
+
+Suites de points normaux, mais avec un accroissement exponentiel.
+Difficultés potentielles : la précision.
+
+** Vérification de la loi d Pareto
+
+L'exponentiel de la forme $y = ax^b$ est parfaitement sur les données, ce qui prouve la vérification de cette loi.
+
 ** Commentaire global
 
 Pour ses différents jeux d'essais, on peut constater plusieurs choses :
 
-1. L'unicité du polynôme obtenu
+1. Les méthodes une droite de régression et deux droites de régression ne donnent pas la même chose
 
-   En effet, ce dernier est souvent le même pour les deux méthodes. Évidemment, des approximations de calcul sont présentes.
+   Et c'est normal. En effet, avec l'un, nous appliquons la formule sur l'ensemble des points. Tandis que sur la deuxième, nous séparons le tableau en deux, puis effectuons une moyenne des deux droites obtenues. C'est donc moins efficace et plus approximatif.
    
-2. Influence de la modification d'un ou plusieurs points donnés sur le polynôme :
+2. Les méthodes d'ajustements sont plus ou moins précise en fonction des cas (comme on peut le constater dans le programme)
    Lorsque l'on donne des points aléatoires au fur et à mesure grâce à l'implémentation de notre méthode "placer un point" pour mettre un point, on peut voir que les deux polynômes s'adaptent bien.
 
 3. Évaluation des coûts :
-   Pour Newton, la complexité est de l'ordre (o)n^2, tandis que pour Lagrange, elle est de (o)n^3. 
+   Pour les droites d'approximation, la complexité est de l'ordre (o)n^2, tandis que pour Lagrange, elle est de (o)n^3. 
    Vous pouvez, grâce au programme, afficher les polynômes avec une grande ou une petite précision. Si vous choisissez la méthode précise, vous aurez alors la moyenne des différences avec les points originaux, ce qui nous permet d'avoir une idée précise sur l’efficacité des méthodes.
 
-* Newpage :ignore:
-\newpage
 * SDL
 
 Le code qui nous permet de gérer la fenêtre SDL est disponible [[file:render.c][ici]].
@@ -524,7 +508,7 @@ Puis, nous avons aussi un cas de débogage. En effet, si l'on n'est pas entré d
 *** TODO Fonctionnalités :
 
 Divers fonctionnalités sont présentes :
-Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant l'interpolation lagrangienne et newtonienne, ainsi que la liste de points à droite.
+Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant les différentes méthodes d'approximation, ainsi que la liste de points à droite.
 
 De plus, si jamais vous voulez rajouter des points à la liste, cette fonctionnalité est disponible grâce au bouton gauche de la souris. Le bouton droit aura pour effet de supprimer le point sélectionné.
 
@@ -538,16 +522,13 @@ Enfin, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
 
 La fonction /end-sdl/ nous permet de fermet la fenêtre SDL proprement, ainsi que faire les opérations nécessaires pour vider la mémoire qui a besoin d'être libéré.
 
-* Conclusion sur les méthodes
+* Newpage :ignore:
+\newpage
+* TODO Conclusion sur les méthodes
 
-** Le reste :ignore:
+Différentes méthodes peuvent être utilisées pour une approximation. En effet, dans certains  cas, les droites d'approximation seront plus efficaces, tandis que, par exemple, pour la loi de Pareto, nous préférerons une des méthodes d'ajustement.
 
-Nous pourrions sûrement améliorer notre programme pour Newton : en effet, d'après la définition des différences divisées, lorsque l'on ajoute de nouveaux points, nous ne sommes pas obligés de recalculer l'ensemble des coefficients du polynôme.
-
-
-En revanche, malgré la différence de programme et de méthode utilisé, les méthodes nous amènent au même résultat (hors approximation des calculs). En effet, les polynômes, grâce aux jeux de données, sont trés proches et passent par les différents points donnés (voir fenêtre graphique SDL).
-
-
+En revanche, malgré  
 
 
 
