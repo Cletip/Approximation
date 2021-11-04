@@ -355,7 +355,7 @@ Liste *RenderingInterpolation(Liste *l)
 	  }else if(
 		   sourisX > SizeX/100 + SizeX/2 && 
 		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*2.8 &&
-		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 1.2 &&
+		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 3.2 &&
 		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*1.8
 		   ){
 	    if(ascciListeAff & 0x04){
@@ -368,7 +368,7 @@ Liste *RenderingInterpolation(Liste *l)
 	  }else if(
 		   sourisX > SizeX/100 + SizeX/2 && 
 		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*1.2 &&
-		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 1.4 &&
+		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 3.1 &&
 		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*0.2
 		   ){
 	    if(ascciListeAff & 0x08){
@@ -686,19 +686,19 @@ void draw(SDL_Renderer *renderer, int SX, int SY, polynome *PolyTab[4], Liste li
 
   SDL_Color Line3 = {0, 0, 255};
   if(isTrue[2]){
-    strcpy(s, "O Expo q 3");
+    strcpy(s, "O Exponentiel de la forme y = ce^(dx)");
   }else{
     Line3.r = 180;
     Line3.b = 180;
     Line3.g = 180;
-    strcpy(s, "N Expo q 3");
+    strcpy(s, "N Exponentiel de la forme y = ce^(dx)");
   }
 
   surfaceMessage = TTF_RenderText_Solid(Font, s, Line3); 
   Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
   Message_rect.x = SX/100 + SX/2; 
   Message_rect.y = (8*SY - (SY/100))/8 - SY/25*2.8; 
-  Message_rect.w = (SX/9) * 1.2;
+  Message_rect.w = (SX/9) * 3.2;
   Message_rect.h = SY/25; 
   SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
   SDL_FreeSurface(surfaceMessage);
@@ -707,19 +707,19 @@ void draw(SDL_Renderer *renderer, int SX, int SY, polynome *PolyTab[4], Liste li
 
   SDL_Color Line4 = {255, 140, 0};
   if(isTrue[3]){
-    strcpy(s, "O Expo q 4");
+    strcpy(s, "O Exponentiel de la forme y = ax^(b)");
   }else{
     Line4.r = 180;
     Line4.b = 180;
     Line4.g = 180;
-    strcpy(s, "N Expo q 4");
+    strcpy(s, "N Exponentiel de la forme y = ax^(b)");
   }
 
   surfaceMessage = TTF_RenderText_Solid(Font, s, Line4); 
   Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
   Message_rect.x = SX/100 + SX/2; 
   Message_rect.y = (8*SY - (SY/100))/8 - SY/25*1.2; 
-  Message_rect.w = (SX/9) * 1.4;
+  Message_rect.w = (SX/9) * 3.1;
   Message_rect.h = SY/25; 
   SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
   SDL_FreeSurface(surfaceMessage);

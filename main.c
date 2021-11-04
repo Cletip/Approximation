@@ -17,6 +17,7 @@
 
  */
 #include "main.h"
+#include "listePoint.h"
 
 /**
  * \fn int main ()
@@ -93,70 +94,6 @@ int main()
     }
   }
 
-  /* polynome *p1 = creePolynomedemande(); */
-  /* polynome *p2 = creePolynome(0); */
-  /* polynome *poly = multPolynome(p1, p2); */
-  /* printf("Test\n"); */
-
-  /* affichepolynome(poly); */
-
-  /* Test des différentes fonctions : */
-  //  float flo = 3.0;
-  //  polynome *machin = transformefloatenpoly(flo);
-
-  /* int a = 10; */
-  /* printf("le truc polynome transformé est %f  d'indice %d \n", machin->p[a],
-   * a); */
-  /* int i = 1000; */
-  /* while (machin->p[i] == 0) */
-  /* { */
-  /*   printf("le truc polynome transformé est %d \n", i); */
-  /*   i++; */
-  /* } */
-
-  /*Liste l = creerListe();
-
-  point p;
-  p.x = 0;
-  p.y = 0;
-  point k;
-  k.x = 2;
-  k.y = 4;
-  point e;
-  e.x = 4;
-  e.y = 0;
-  point m;
-  m.x = 6;
-  m.y = 4;
-  ajouteDebut(&l, m);
-  ajouteDebut(&l, e);
-  ajouteDebut(&l, k);
-  ajouteDebut(&l, p);
-  float **points;
-
-
-   points = ListeToTabsPoints(l); */
-
-  /* for (int i = 0; i < 4; i++) */
-  /* { */
-  /* printf("point : %f, %f\n", points[0][i], points[1][i]); */
-  /* } */
-
-  //  polynome *fonction = calculLagrange(l);
-
-  //  affichepolynome(fonction);
-  //  fonction = ResolutionParNewton(l);
-  //  affichepolynome(fonction);
-
-  //  for(int i = 0; i < 4; i++){
-  //    printf("point : %f, %f\n", points[0][i], points[1][i]);
-  //  }
-
-  //  polynome *pute = ResolutionParNewton(l);
-  //  affichepolynome(pute);printf("\n");
-
-  //  int x; /**< Description de x. */
-
   return 0;
 }
 
@@ -219,13 +156,51 @@ void casAutoFill(Liste *l)
 
   printf(
       "Comment voulez vous remplir la liste?\n        e : Densité de l'eau en "
-      "fonction de la température.\n        u : S1.\n        d : S2.\n        "
-      "a : Ex3.\n        "
-      "t : S3.\n        m : Depenses mensuelle et revenu.\nVotre choix :");
+      "fonction de la température.\n        s : Série S.\n        u : S1.\n        d : S2.\n        t : S3.\n        "
+      //      "a : Ex3.\n        "
+      "x : Série Chronologique avec accroissement exponentiel.\n        "
+      "p : Patero.\n        "
+      "m : Depenses mensuelle et revenu.\nVotre choix :");
   scanf("%c", &choix);
   getchar();
   switch (choix)
   {
+  case 's':
+    ViderListe(l);
+    p.x = 10;
+    p.y = 8.04;
+    ajouteFin(l, p);
+    p.x = 8;
+    p.y = 6.95;
+    ajouteFin(l, p);
+    p.x = 13;
+    p.y = 7.58;
+    ajouteFin(l, p);
+    p.x = 9;
+    p.y = 8.81;
+    ajouteFin(l, p);
+    p.x = 11;
+    p.y = 8.33;
+    ajouteFin(l, p);
+    p.x = 14;
+    p.y = 9.96;
+    ajouteFin(l, p);
+    p.x = 6;
+    p.y = 7.24;
+    ajouteFin(l, p);
+    p.x = 4;
+    p.y = 4.26;
+    ajouteFin(l, p);
+    p.x = 12;
+    p.y = 10.84;
+    ajouteFin(l, p);
+    p.x = 7;
+    p.y = 4.82;
+    ajouteFin(l, p);
+    p.x = 5;
+    p.y = 5.68;
+    ajouteFin(l, p);
+    break;
   case 'e':
     ViderListe(l);
     p.x = 0;
@@ -460,6 +435,39 @@ void casAutoFill(Liste *l)
     p.y = 223;
     ajouteFin(l, p);
     break;
+  case 'x':
+    ViderListe(l);
+    p.x = 88;
+    p.y = 5.89;
+    ajouteFin(l, p);
+    p.x = 89;
+    p.y = 6.77;
+    ajouteFin(l, p);
+    p.x = 90;
+    p.y = 7.87;
+    ajouteFin(l, p);
+    p.x = 91;
+    p.y = 9.11;
+    ajouteFin(l, p);
+    p.x = 92;
+    p.y = 10.56;
+    ajouteFin(l, p);
+    p.x = 93;
+    p.y = 12.27;
+    ajouteFin(l, p);
+    p.x = 94;
+    p.y = 13.92;
+    ajouteFin(l, p);
+    p.x = 95;
+    p.y = 15.72;
+    ajouteFin(l, p);
+    p.x = 96;
+    p.y = 17.91;
+    ajouteFin(l, p);
+    p.x = 97;
+    p.y = 22.13;
+    ajouteFin(l, p);
+    break;
   case 'a':
     ViderListe(l);
     p.x = 0.5;
@@ -476,6 +484,30 @@ void casAutoFill(Liste *l)
     ajouteFin(l, p);
     p.x = 2.5;
     p.y = 10.16;
+    ajouteFin(l, p);
+    break;
+  case 'p':
+    ViderListe(l);
+    p.x = 20;
+    p.y = 352;
+    ajouteFin(l, p);
+    p.x = 30;
+    p.y = 128;
+    ajouteFin(l, p);
+    p.x = 40;
+    p.y = 62.3;
+    ajouteFin(l, p);
+    p.x = 50;
+    p.y = 35.7;
+    ajouteFin(l, p);
+    p.x = 100;
+    p.y = 6.3;
+    ajouteFin(l, p);
+    p.x = 300;
+    p.y = 0.4;
+    ajouteFin(l, p);
+    p.x = 500;
+    p.y = 0.1;
     ajouteFin(l, p);
     break;
   default:
