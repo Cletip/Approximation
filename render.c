@@ -1,4 +1,7 @@
 #include "render.h"
+#include <stdio.h>
+
+static int ascciListeAff = 15;
 
 /**
  * \fn int main (int argc, char **argv)
@@ -34,7 +37,7 @@ Liste *RenderingInterpolation(Liste *l)
   ResultPoints[2] = creerListe();
   ResultPoints[3] = creerListe();
 
-  int ascciListeAff = 15;
+
 
   long int LastFrame;
   long int TimeCount;
@@ -161,23 +164,18 @@ Liste *RenderingInterpolation(Liste *l)
                         (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) +
                     ResultPoly[numb]->p[0];
                 break;
-              case 3:
+              case 2:
                 ptempo.y =
                     pow(ResultPoly[numb]->p[0],
-                        (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) *
-                            ResultPoly[numb]->p[1]);
+                        (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) * ResultPoly[numb]->p[1]);
                 break;
-              case 2:
+              case 3:
                 ptempo.y =
                     ResultPoly[numb]->p[0] *
                     pow((float)(graphXdeb + (i * (float)(graphXS) / nbPoints)),
                         ResultPoly[numb]->p[1]);
                 break;
               }
-              ptempo.y =
-                  ResultPoly[numb]->p[1] *
-                      (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) +
-                  ResultPoly[numb]->p[0];
               ajouteFin(&ResultPoints[numb], ptempo);
             }
 
@@ -219,7 +217,7 @@ Liste *RenderingInterpolation(Liste *l)
                                    ((-m->suiv->val.y - graphYdeb) / graphXS) *
                                            (SizeY / 2 - (2 * SizeY / 2 / 100)) +
                                        (SizeY / 2 / 100));
-                m = m->suiv;
+		m = m->suiv;
               }
             }
           }
@@ -328,7 +326,59 @@ Liste *RenderingInterpolation(Liste *l)
                    sourisY < (SizeY / 8) + (SizeY * 10 / 25) + SizeY * 2 / 25)
           {
             Stape = 0;
-          }
+          }else if(
+		   sourisX > SizeX/100 && 
+		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*2.8 &&
+		   sourisX < SizeX/100 + (SizeX/9) * 1.7 &&
+		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*1.8
+		   ){
+	    if(ascciListeAff & 0x01){
+	      ascciListeAff -= 1;
+	      done = 0;
+	    }else{
+	      ascciListeAff += 1;
+	      done = 0;
+	    }
+	  }else if(
+		   sourisX > SizeX/100 && 
+		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*1.2 &&
+		   sourisX < SizeX/100 + (SizeX/9) * 2 &&
+		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*0.2
+		   ){
+	    if(ascciListeAff & 0x02){
+	      ascciListeAff -= 2;
+	      done = 0;
+	    }else{
+	      ascciListeAff += 2;
+	      done = 0;
+	    }
+	  }else if(
+		   sourisX > SizeX/100 + SizeX/2 && 
+		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*2.8 &&
+		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 1.2 &&
+		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*1.8
+		   ){
+	    if(ascciListeAff & 0x04){
+	      ascciListeAff -= 4;
+	      done = 0;
+	    }else{
+	      ascciListeAff += 4;
+	      done = 0;
+	    }
+	  }else if(
+		   sourisX > SizeX/100 + SizeX/2 && 
+		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*1.2 &&
+		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 1.4 &&
+		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*0.2
+		   ){
+	    if(ascciListeAff & 0x08){
+	      ascciListeAff -= 8;
+	      done = 0;
+	    }else{
+	      ascciListeAff += 8;
+	      done = 0;
+	    }
+	  }
         }
         else if (event.button.button == SDL_BUTTON_RIGHT)
         {
@@ -554,71 +604,126 @@ void draw(SDL_Renderer *renderer, int SX, int SY, polynome *PolyTab[4], Liste li
   SDL_Rect Message_rect;
 
 
-  //écrit le polynôme de newton
-  /*
-  char s[1000];
-  SDL_Color Green = {0, 255, 0};
-  strcpy(s, "Newtone : ");
-  char tmp[20];
-  if(newt->maxDeg != 0){
-      sprintf(tmp, "%6.2f*x^%d", newt->p[newt->maxDeg], newt->maxDeg);
-    }else {
-      sprintf(tmp, "%6.2f", newt->p[newt->maxDeg]);
-    }
-  strcat(s, tmp);
-  for(int i = newt->maxDeg - 1; (i >-1) && (i > newt->maxDeg - 6); i--){
-    if(i != 0){
-      sprintf(tmp, " + %6.2f*x^%d", newt->p[i], i);
-    }else {
-      sprintf(tmp, " + %6.2f", newt->p[i]);
-    }
-    strcat(s, tmp);
-  }
-  if(newt ->maxDeg > 5){
-    strcat(s, " + ...");
-  }
-  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Font, s, Green); 
-  SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-  SDL_Rect Message_rect;
-  Message_rect.x = SX/100; 
-  Message_rect.y = (7*SY + (SY/100))/8; 
-  Message_rect.w = (SX/9) * ((newt->maxDeg < 6)?newt->maxDeg+1 : 8);
-  Message_rect.h = SY/25; 
-  SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-  SDL_FreeSurface(surfaceMessage);
-  SDL_DestroyTexture(Message);
+  //  int temporaireVlueAscii = ascciListeAff;
 
+  int isTrue[4];
+  isTrue[0] = 0;
+  isTrue[1] = 0;
+  isTrue[2] = 0;
+  isTrue[3] = 0;
+  
+  for (int numb = 0; numb < 4; numb++) {
+    int temporaireVlueAscii = ascciListeAff;
+    for (int tmp = 3; tmp > numb; tmp--){
+      if (temporaireVlueAscii / (float)(pow(2, tmp)) >= 1) {
+	temporaireVlueAscii -= pow(2, tmp);
+      }
+    }
+    if (temporaireVlueAscii / (float)(pow(2, numb)) >= 1) {
+      isTrue[numb] = 1;
+      
+    }
+  }
 
-  //ecrit le polynome de lagrange
-  SDL_Color Blue = {0, 0, 255};
-  strcpy(s, "Lagrange : ");
-  if(lagr->maxDeg != 0){
-      sprintf(tmp, "%6.2f*x^%d", lagr->p[lagr->maxDeg], lagr->maxDeg);
-    }else {
-      sprintf(tmp, "%6.2f", lagr->p[lagr->maxDeg]);
-    }
-  strcat(s, tmp);
-  for(int i = lagr->maxDeg - 1; (i >-1) && (i > lagr->maxDeg - 6); i--){
-    if(i != 0){
-      sprintf(tmp, " + %6.2f*x^%d", lagr->p[i], i);
-    }else {
-      sprintf(tmp, " + %6.2f", lagr->p[i]);
-    }
-    strcat(s, tmp);
+  /*            case 0:
+              SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+              break;
+            case 1:
+              SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+              break;
+            case 2:
+              SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+              break;
+            case 3:
+              SDL_SetRenderDrawColor(renderer, 255, 140, 0, 255);
+              break;
+            default:
+              SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+              break;*/
+
+  
+  
+  SDL_Color Line1 = {255, 0, 255};
+  if(isTrue[0]){
+    strcpy(s, "O 1 seule ligne");
+  }else{
+    Line1.r = 180;
+    Line1.b = 180;
+    Line1.g = 180;
+    strcpy(s, "N 1 seule ligne");
   }
-  if(lagr ->maxDeg > 5){
-    strcat(s, " + ...");
-  }
-  surfaceMessage = TTF_RenderText_Solid(Font, s, Blue); 
+
+  surfaceMessage = TTF_RenderText_Solid(Font, s, Line1); 
   Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
   Message_rect.x = SX/100; 
-  Message_rect.y = (8*SY - (SY/100))/8 - SY/25; 
-  Message_rect.w = (SX/9) * ((lagr->maxDeg < 6)?lagr->maxDeg+1 : 8);
+  Message_rect.y = (8*SY - (SY/100))/8 - SY/25*2.8; 
+  Message_rect.w = (SX/9) * 1.7;
   Message_rect.h = SY/25; 
   SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
   SDL_FreeSurface(surfaceMessage);
   SDL_DestroyTexture(Message);
-  */
+
+
+  SDL_Color Line2 = {0, 255, 255};
+  if(isTrue[1]){
+    strcpy(s, "O moyenne 2 lignes");
+  }else{
+    Line2.r = 180;
+    Line2.b = 180;
+    Line2.g = 180;
+    strcpy(s, "N moyenne 2 lignes");
+  }
+
+  surfaceMessage = TTF_RenderText_Solid(Font, s, Line2); 
+  Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+  Message_rect.x = SX/100; 
+  Message_rect.y = (8*SY - (SY/100))/8 - SY/25*1.2; 
+  Message_rect.w = (SX/9) * 2;
+  Message_rect.h = SY/25; 
+  SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+  SDL_FreeSurface(surfaceMessage);
+  SDL_DestroyTexture(Message);
+
+  SDL_Color Line3 = {0, 0, 255};
+  if(isTrue[2]){
+    strcpy(s, "O Expo q 3");
+  }else{
+    Line3.r = 180;
+    Line3.b = 180;
+    Line3.g = 180;
+    strcpy(s, "N Expo q 3");
+  }
+
+  surfaceMessage = TTF_RenderText_Solid(Font, s, Line3); 
+  Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+  Message_rect.x = SX/100 + SX/2; 
+  Message_rect.y = (8*SY - (SY/100))/8 - SY/25*2.8; 
+  Message_rect.w = (SX/9) * 1.2;
+  Message_rect.h = SY/25; 
+  SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+  SDL_FreeSurface(surfaceMessage);
+  SDL_DestroyTexture(Message);
+
+
+  SDL_Color Line4 = {255, 140, 0};
+  if(isTrue[3]){
+    strcpy(s, "O Expo q 4");
+  }else{
+    Line4.r = 180;
+    Line4.b = 180;
+    Line4.g = 180;
+    strcpy(s, "N Expo q 4");
+  }
+
+  surfaceMessage = TTF_RenderText_Solid(Font, s, Line4); 
+  Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+  Message_rect.x = SX/100 + SX/2; 
+  Message_rect.y = (8*SY - (SY/100))/8 - SY/25*1.2; 
+  Message_rect.w = (SX/9) * 1.4;
+  Message_rect.h = SY/25; 
+  SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+  SDL_FreeSurface(surfaceMessage);
+  SDL_DestroyTexture(Message);
 
   
   
