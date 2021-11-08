@@ -47,7 +47,7 @@ Pour les deux méthodes, le but est le même, trouver l'équation d'une droite a
 
 ** Méthode des droites de régression
 
-Pour cette méthode, nous devons utiliser la formule du cours suivante (Où $\bar{x}$ et $\bar{y}$ sont les moyenne respective de $x$ et de $y$.):
+Pour cette méthode, nous devons utiliser la formule du cours suivante (Où $\bar{x}$ et $\bar{y}$ sont les moyenne respective de $x$ et de $y$):
 
 \[ a =\frac{\overline{xy}-\bar{x}\bar{y}}{\bar(x^2)-(\bar{x}^2)}  \]
 
@@ -65,8 +65,8 @@ Nous appliquons la formule du cours donnée précédemment.
  
 *** Question 2
 
-Nous appliquerons la même méthode que la méthode à la [[*Question 1][Question 1]], sauf que nous le faisons deux fois pour chaque partie du tableau.
-Puis nous effectuons la moyenne des deux droites pour en obtenir une.
+Nous appliquerons la même méthode que la méthode à la [[*Question 1][Question 1]], sauf que nous le ferons pour les deux parties du tableau.
+Puis nous effectuons la moyenne des deux droites pour en obtenir une unique.
 
 ** Méthode des ajustements
 
@@ -262,9 +262,9 @@ Nous avons également fait les diverses fonctions de bases :
 ** Présentation de la méthode droites de régression
 
 *** Simple
-Pour résoudre avec cette méthode, nous avons tout simplement effectué, grâce à nous fonctions usuelles, les calculs "normaux" pour faire une droite de régression.
+Pour résoudre avec cette méthode, nous avons tout simplement effectué, grâce à nos fonctions usuelles, les calculs "normaux" pour faire une droite de régression.
 
-Nous avons également pas oublié de free nous différents tableaux.
+Nous avons également pensé à libérer la mémoire de nos différents tableaux.
 
 #+begin_src C
   
@@ -336,7 +336,7 @@ Puis, grâce à la fonction /lnListe/, nous créons un second tableau qui contie
 
 
 
-*** TODO Question 3 (Exponentiel) (revoir après le bon fonctionnement des courbes)
+*** Question 3 (Exponentiel)
 
 
 Nous initialisons les variables /a/ et /b/, qui seront des variables temporaires.
@@ -361,7 +361,7 @@ a = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
   
 #+end_src
 
-Et le second sera pour la coefficient présent devant x
+Et le second sera pour la coefficient présent devant x.
 
 
 #+begin_src C
@@ -391,7 +391,7 @@ Le premier calcul sera pour calculer l'exposant, donc b.
   
 #+end_src
 
-Et le second sera pour la coefficient présent devant x
+Et le second sera pour la coefficient présent devant x.
 
 
 #+begin_src C
@@ -403,7 +403,7 @@ float temp = moyenneYnl - (b * moyenneXnl);
  
 Enfin, nous pouvons retourner le polynôme P.
 
-* TODO Présentation des Jeux d'essais avec commentaires
+* Présentation des Jeux d'essais avec commentaires
 
 
 Les différents résultats sont disponibles en faisant les test grâces aux fonctionnalités implémentées dans le programme.
@@ -444,8 +444,7 @@ Résultats :Les polynômes ont soit des coefficients très importants, soit des 
 
 ** Série chronologique avec accroissement exponentiel
 
-Suites de points normaux, mais avec un accroissement exponentiel.
-Difficultés potentielles : la précision.
+L'exponentiel de la forme $y = ce^{dx}$ est parfaitement sur les données, ce qui prouve que cette approximation est adaptée.
 
 ** Vérification de la loi d Pareto
 
@@ -455,16 +454,15 @@ L'exponentiel de la forme $y = ax^b$ est parfaitement sur les données, ce qui p
 
 Pour ses différents jeux d'essais, on peut constater plusieurs choses :
 
-1. Les méthodes une droite de régression et deux droites de régression ne donnent pas la même chose
+1. La méthode des droites de régression et deux droites de régression ne donnent pas la même chose
 
-   Et c'est normal. En effet, avec l'un, nous appliquons la formule sur l'ensemble des points. Tandis que sur la deuxième, nous séparons le tableau en deux, puis effectuons une moyenne des deux droites obtenues. C'est donc moins efficace et plus approximatif.
+   Et c'est normal. En effet, avec l'un, nous appliquons la formule sur l'ensemble des points. Tandis que sur la deuxième, nous séparons le tableau en deux, puis effectuons une moyenne des deux droites obtenues. Leur efficacité dépend donc des points donnés, et est donc "aléatoire".
    
-2. Les méthodes d'ajustements sont plus ou moins précise en fonction des cas (comme on peut le constater dans le programme)
-   Lorsque l'on donne des points aléatoires au fur et à mesure grâce à l'implémentation de notre méthode "placer un point" pour mettre un point, on peut voir que les deux polynômes s'adaptent bien.
+2. Les méthodes d'ajustements sont plus ou moins précises en fonction des cas (comme on peut le constater dans le programme)
 
 3. Évaluation des coûts :
-   Pour les droites d'approximation, la complexité est de l'ordre (o)n^2, tandis que pour Lagrange, elle est de (o)n^3. 
-   Vous pouvez, grâce au programme, afficher les polynômes avec une grande ou une petite précision. Si vous choisissez la méthode précise, vous aurez alors la moyenne des différences avec les points originaux, ce qui nous permet d'avoir une idée précise sur l’efficacité des méthodes.
+   Pour les droites d'approximation, la complexité est de l'ordre (o)n^2, elle est également de (o)n^2 pour les méthodes des questions 3 et 4.
+   
 
 * SDL
 
@@ -505,7 +503,7 @@ Puis, nous avons aussi un cas de débogage. En effet, si l'on n'est pas entré d
 
 
 
-*** TODO Fonctionnalités :
+*** Fonctionnalités :
 
 Divers fonctionnalités sont présentes :
 Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant les différentes méthodes d'approximation, ainsi que la liste de points à droite.
@@ -514,21 +512,20 @@ De plus, si jamais vous voulez rajouter des points à la liste, cette fonctionna
 
 Le curseur aura alors une position (x et y) qui sera automatiquement ajouté dans la liste des points. Les courbes ainsi que les polynômes vont s'adapter automatiquement !
 
+D'autre part, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
 
-Enfin, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
+Enfin, vous pouvez activer ou désactiver les différentes courbes des fonctions en appuyant sur leur nom. 
 
 
 ** Fin de SDL
 
 La fonction /end-sdl/ nous permet de fermet la fenêtre SDL proprement, ainsi que faire les opérations nécessaires pour vider la mémoire qui a besoin d'être libéré.
 
-* Newpage :ignore:
-\newpage
-* TODO Conclusion sur les méthodes
 
-Différentes méthodes peuvent être utilisées pour une approximation. En effet, dans certains  cas, les droites d'approximation seront plus efficaces, tandis que, par exemple, pour la loi de Pareto, nous préférerons une des méthodes d'ajustement.
+* Conclusion sur les méthodes
 
-En revanche, malgré  
+Différentes méthodes peuvent être utilisées pour une approximation. En effet, dans certains cas, les droites d'approximations seront plus efficaces, tandis que, par exemple, pour la loi de Pareto, nous préférerons une des méthodes d'ajustement.
+
 
 
 

@@ -1,4 +1,4 @@
-% Created 2021-10-26 Tue 08:54
+% Created 2021-11-08 Mon 10:00
 % Intended LaTeX compiler: pdflatex
 \documentclass[letter]{article}
                       \usepackage[utf8]{inputenc}
@@ -38,11 +38,11 @@
 \newpage
 
 \section{Rappel rapide des méthodes}
-\label{sec:org72f685e}
+\label{sec:org680d651}
 
 
 \subsection{Cas général des méthodes}
-\label{sec:orgad6ac0e}
+\label{sec:orgd65ecb2}
 
 Pour les deux méthodes, le but est le même, trouver l'équation d'une droite avec un nombre de points \(n\) de la forme :
 
@@ -53,9 +53,9 @@ Pour les deux méthodes, le but est le même, trouver l'équation d'une droite a
 
 
 \subsection{Méthode des droites de régression}
-\label{sec:org682519e}
+\label{sec:org821102c}
 
-Pour cette méthode, nous devons utiliser la formule du cours suivante (Où \(\bar{x}\) et \(\bar{y}\) sont les moyenne respective de \(x\) et de \(y\).):
+Pour cette méthode, nous devons utiliser la formule du cours suivante (Où \(\bar{x}\) et \(\bar{y}\) sont les moyenne respective de \(x\) et de \(y\)):
 
 \[ a =\frac{\overline{xy}-\bar{x}\bar{y}}{\bar(x^2)-(\bar{x}^2)}  \]
 
@@ -67,19 +67,19 @@ et
 
 
 \subsubsection{Question 1}
-\label{sec:orgbd2229a}
+\label{sec:org9a25397}
 
 Nous appliquons la formule du cours donnée précédemment.
 
 
 \subsubsection{Question 2}
-\label{sec:org1a79d34}
+\label{sec:org217d3c1}
 
-Nous appliquerons la même méthode que la méthode à la \hyperref[sec:orgbd2229a]{Question 1}, sauf que nous le faisons deux fois pour chaque partie du tableau.
-Puis nous effectuons la moyenne des deux droites pour en obtenir une.
+Nous appliquerons la même méthode que la méthode à la \hyperref[sec:org9a25397]{Question 1}, sauf que nous le ferons pour les deux parties du tableau.
+Puis nous effectuons la moyenne des deux droites pour en obtenir une unique.
 
 \subsection{Méthode des ajustements}
-\label{sec:orge506b10}
+\label{sec:orgfcf2d70}
 
 Pour nous permettre de trouver une droite, nous devons modifier les deux équations pour arriver à une autre équation de la forme.
 
@@ -87,10 +87,10 @@ Pour nous permettre de trouver une droite, nous devons modifier les deux équati
 
 Nous allons donc modifier les équations initiales.
 
-Suite à cela, nous appliquerons la \hyperref[sec:org682519e]{méthode des droites de régression} avec les variables correspondantes.
+Suite à cela, nous appliquerons la \hyperref[sec:org821102c]{méthode des droites de régression} avec les variables correspondantes.
 
 \subsubsection{Question 3}
-\label{sec:orgb57681e}
+\label{sec:org1ceb492}
 
 
 	    \begin{align*}
@@ -107,7 +107,7 @@ On pose donc \(Y = ln(y)\), \(X = ln(x)\), \(A=b\) et \(B = ln(a)\).
 
 
 \subsubsection{Question 4}
-\label{sec:orgb9ab7f5}
+\label{sec:orga098bb8}
 
 	    \begin{align*}
 	y &= ce^{dx} \\
@@ -124,12 +124,12 @@ On pose donc \(Y = ln(y)\), \(X = x\), \(A=d*ln(e)\) et \(B = ln(c)\).
 
 
 \section{Présentation des programmes commentés}
-\label{sec:orgbf44e75}
+\label{sec:org9c2b1dd}
 
 Nous ne mettrons pas l'intégralité du code des différentes résolutions, mais ils sont consultables \href{ajuste.c}{ici pour la méthode des ajustements} et \href{DroiteReg.c}{ici pour la méthode des régréssions}.
 
 \subsection{Nos structures}
-\label{sec:org8329524}
+\label{sec:orgd0f8585}
 
 Nous avons choisis d'utiliser plusieurs structures pour plusieurs cas :
 \begin{enumerate}
@@ -141,12 +141,12 @@ Nous avons choisis d'utiliser plusieurs structures pour plusieurs cas :
 \end{enumerate}
 
 \subsubsection{Listes/Points}
-\label{sec:org3b0c77a}
+\label{sec:orgd5c8de0}
 
 
 \begin{enumerate}
 \item Présentation du code général
-\label{sec:org8b3ec69}
+\label{sec:org866d568}
 Le code pour les listes ainsi que pour les points est trouvable \href{listePoint.c}{ici}.
 
 Pour former un point, nous avons tout simplement besoin d'un x et d'un y associé à celui-ci.
@@ -196,7 +196,7 @@ De plus, les fonctions usuelles des listes sont également créé :
 
 
 \item Présentation des fonctions utilisées pour résoudre le problème de départ
-\label{sec:org233b77e}
+\label{sec:org46e0fb6}
 
 Les différentes fonctions utilisées sont disponible dans la fin de \href{listePoint.c}{ici}.
 
@@ -212,7 +212,7 @@ Les différentes fonctions utilisées sont disponible dans la fin de \href{liste
 \end{enumerate}
 
 \subsubsection{Polynômes}
-\label{sec:org116fa8b}
+\label{sec:org47f577d}
 
 
 Le code pour les polynôme est trouvable \href{polynome.c}{ici}. 
@@ -288,92 +288,68 @@ return poly;
 
 
 
-\subsection{{\bfseries\sffamily TODO} Présentation de la méthode droites de régression}
-\label{sec:org0de4b8c}
+\subsection{Présentation de la méthode droites de régression}
+\label{sec:orgab84bf4}
 
-Pour aborder ce problème, nous avons décidé d'aborder ce problème en deux étapes : 
-\begin{enumerate}
-\item D'abord, calculer Li, avec une fonction \emph{calculLi}
-\item Puis, grâce à la fonction \emph{calculLi} que l'on appelle dans la fonction \emph{calculLagrange}, on renvoie le polynôme correspondant à l'interpolation.
-\end{enumerate}
+\subsubsection{Simple}
+\label{sec:org66ed61c}
+Pour résoudre avec cette méthode, nous avons tout simplement effectué, grâce à nos fonctions usuelles, les calculs "normaux" pour faire une droite de régression.
 
-\subsubsection{Présentation de la fonction \emph{calculLi}}
-\label{sec:org3a52d98}
-
-Suite à l'initialisation des variables nécessaires, cette fonction permet le calcul de Li, avec  \(i\in [0, 1, ... , k]\).
-Les deux principales difficultés sont les suivantes :
-\begin{enumerate}
-\item Prendre en compte le cas de la division par 0, lorsque \(x_i - x_j = 0\).
-\item Réinitialiser x à chaque tour de boucle. En effet, nos fonction renvoie un nouveau pointeur, ce qui supprime x à chaque fois. Nous devons donc le réinitialiser à chaque tour dans la boucle, ce qui nous permet d'enlever la fameuse erreur "segmentation fault" !
-\end{enumerate}
+Nous avons également pensé à libérer la mémoire de nos différents tableaux.
 
 \begin{verbatim}
 
-for (i = 0; i < ListLenght(points); ++i)
-{
-  if (i == numero)
-  {
-    /* si i = numero, alors il y aurait une division par 0. On ne
-       fait donc rien */
-  }
-  else
-  {
-    /* Création du polynôme pour les calculs */
-    polynome *x = creePolynome(1);
-    x->p[1] = 1;
-
-    /* Calcul de la première différence */
-    polynome *y = addPolynome(x, transformefloatenpoly(-pointstab[0][i]));
-
-    /* calcul de la multiplication par l'inverse de xnum - xi */
-    polynome *tmp = multPolynome(
-	y,
-	transformefloatenpoly(1 / (pointstab[0][numero] - pointstab[0][i])));
-
-    /* multiplication par le polynôme précédemment calculé */
-    Li = multPolynome(Li, tmp);
-  }
+  polynome *UneDroiteReg(Liste l){
+  polynome *P = creePolynome(1);
+  int n = ListLenght(l);
+  float **Res = ListeToTabsPoints(l);
+  P->p[1] = (moyXY(Res, n) - moyX(Res, n) * moyY(Res, n))/(moyXcar(Res, n) - carmoyX(Res, n));
+  P->p[0] = moyY(Res, n) - moyX(Res, n)*((moyXY(Res, n) - moyX(Res, n) * moyY(Res, n))/(moyXcar(Res, n) - carmoyX(Res, n)));
+  free(Res[1]);free(Res[0]);free(Res);
+  return P;
 }
-
-return Li;
 
 \end{verbatim}
 
-\subsubsection{Présentation de la fonction \emph{calculLagrange}}
-\label{sec:org08b3af0}
+\subsubsection{Double}
+\label{sec:org2a366b0}
 
-Cette fonction permet de faire la somme des différents Li trouvé dans la fonction \hyperref[sec:org3a52d98]{\emph{calculLi}}.
-En effet, pour compléter la méthode de Lagrange, il faut faire une boucle \emph{for} qui fait une somme des \(y_i\) multiplier par \hyperref[sec:org3a52d98]{\emph{calculLi}} pour l'itération \(i\).
+Pour résoudre avec deux droites de régression, nous avons d'abord séparé en deux notre tableau de points. Puis, nous avons appliqué la première méthode distinctement sur les deux tableaux. Enfin, nous avons fait la moyenne de ces deux droites pour calculer la dernière droite (qui est le polynôme renvoyé).
 
 \begin{verbatim}
 
-  int i;
+  polynome *DeuxDroiteReg(Liste l){
+  float **Res = ListeToTabsPoints(l);
+  int n = ListLenght(l);
+  float moy = moyY(Res, n);
+  Maillon *m = l.first;
+  Liste l1 = creerListe();
+  Liste l2 = creerListe();
+  for(int i = 0; i < n; i++){
+    if(m->val.y < moy){
+      ajouteFin(&l1, m->val);
+    }else {
+      ajouteFin(&l2, m->val);
+    }
+    m = m->suiv;
+  }
+  polynome *p1 = UneDroiteReg(l1);
+  polynome *p2 = UneDroiteReg(l2);
+  polynome *Ret = creePolynome(1);
+  Ret->p[0] = (p1->p[0] + p2->p[0])/2;
+  Ret->p[1] = (p1->p[1] + p2->p[1])/2;
 
-/* création du polynôme du résultatde l'interpolation  */
-polynome *fonction = creePolynome(ListLenght(points));
-
-/* Initialisation d'un tableau à partir d'une liste (accéder au
-   valeur plus facilement) */
-float **pointstab;
-pointstab = ListeToTabsPoints(points);
-
-/* boucle for pour multiplier par yi les Li calculer dans la
-   fonction calculLi */
-for (i = 0; i < ListLenght(points); ++i)
-{
-  fonction = addPolynome(fonction,
-			 multPolynome(transformefloatenpoly(pointstab[1][i]),
-				      calculLi(i, points)));
+  detruireListe(l1);
+  detruireListe(l2);
+  free(Res[1]);free(Res[0]);free(Res);
+  return Ret;
 }
 
-return fonction;
 
 \end{verbatim}
-
-Il ne reste plus qu'à retourner le polynôme trouver pour pouvoir l'afficher ou bien même l'utiliser dans SDL.
 
 \subsection{Présentation de la méthode des ajustements}
-\label{sec:orgaf1f6ec}
+\label{sec:orgb07394f}
 
 Le code pour la méthode des ajustements est disponible \href{ajuste.c}{ici}.
 
@@ -394,85 +370,92 @@ float **Tln = lnListe(Tnormal, n);
 
 
 \subsubsection{Question 3 (Exponentiel)}
-\label{sec:orgbe1608f}
+\label{sec:org44fa85f}
+
+
+Nous initialisons les variables \emph{a} et \emph{b}, qui seront des variables temporaires.
+
+Puis, nous calculons les moyennes de X et de Yln, pour faciliter la lecture du code et rendre le code plus facilement compréhensible.
+
+\begin{verbatim}
+
+float moyenneX = moyX(Tnormal, n);
+float moyenneYln = moyY(Tln, n);
+
+\end{verbatim}
+
+Subséquemment, nous pouvons effectuer le calcul des ajustement de la puissance appliquant la formule du cours, ainsi qu'en utilisant la formule posé précédemment.
+
+Le premier calcul sera pour calculer l'exposant présent devant x, donc d.
+
+\begin{verbatim}
+
+a = (moyXY2tab(Tnormal, Tln, n) - moyX(Tnormal, n) * moyY(Tln, n)) /
+      (moyXcar(Tnormal, n) - carmoyX(Tnormal, n));
+
+\end{verbatim}
+
+Et le second sera pour la coefficient présent devant x.
+
+
+\begin{verbatim}
+
+float temp = moyenneYln - (a * moyenneX);
+  b = exp(1) * exp(temp);
+
+\end{verbatim}
+
+Enfin, nous pouvons retourner le polynôme P.
+
+
 
 \subsubsection{Question 4 (Puissance)}
-\label{sec:org93ac5d0}
+\label{sec:org4dfbb08}
 
+Nous initialisons les variables \emph{a} et \emph{b}, qui seront des variables temporaires.
+
+
+Subséquemment, nous pouvons effectuer le calcul des ajustement de la puissance appliquant la formule du cours, ainsi qu'en utilisant la formule posé précédemment.
+
+Le premier calcul sera pour calculer l'exposant, donc b.
+
+\begin{verbatim}
+
+b = (moyXY(Tln, n) - moyX(Tln, n) * moyY(Tln, n)) /
+    (moyXcar(Tln, n) - carmoyX(Tln, n));
+
+\end{verbatim}
+
+Et le second sera pour la coefficient présent devant x.
 
 
 \begin{verbatim}
 
-long double **triangle = (long double **)malloc(sizeof(long double *) * (pointNB));
-for(int i = 0; i < pointNB; i++){
-  triangle[i] = (long double *)malloc(sizeof(long double) * (pointNB-i));
-}
-
+float temp = moyenneYnl - (b * moyenneXnl);
+  a = exp(temp);
 
 \end{verbatim}
 
-Puis, nous remplissons la première colonne avec les ordonnées des points.
-
-\begin{verbatim}
-for(int i = 0; i < pointNB; i++)  
-  {
-    triangle[0][i] = Points[1][i];
-  }
-
-\end{verbatim}
-
-Subséquemment, nous pouvons effectuer le calcul des différences divisées en appliquant la formule du cours
-
-\begin{verbatim}
-
-for(int i = 1; i < pointNB; i++){
-  for(int j = 0; j < pointNB-i; j++){
-    triangle[i][j] = (triangle[i-1][j+1] - triangle[i-1][0]) / (Points[0][i+j] - Points[0][i-1]);
-  }
- }
-
-\end{verbatim}
-
-
-Enfin, nous pouvons passer à la résolution résolution finale, qui elle aussi est issue du cours.
-\begin{verbatim}
-
-for(int i = 0; i < pointNB-1; i++){
-  /* créer le polynome "constant" */
-  tmp = creePolynome(2);
-  tmp->p[1] = 1;
-
-  /* résolution de la méthode */
-  tmp->p[0] = -Points[0][pointNB - 2 - i];
-  Solution = multPolynome(Solution, tmp);
-  Solution->p[0] += triangle[pointNB-i-2][0];
-}
-Solution = AdaptePoly(Solution);
-
-\end{verbatim}
-
-Il ne nous reste plus qu'à retourner le polynôme obtenu pour pouvoir l'afficher  dans le terminal, où sous une courbe avec SDL.
+Enfin, nous pouvons retourner le polynôme P.
 
 \section{Présentation des Jeux d'essais avec commentaires}
-\label{sec:org646d02b}
-
-Les différents résultats sont disponibles en faisant les test grâces au fonctionnalité implémenter dans le programme.
+\label{sec:orgff392cb}
 
 
-\subsection{Densité de l'eau en fonction de la température de l'air :}
-\label{sec:orgf2cd533}
-
-Liste de points avec une précision de l'ordre de 10\textsuperscript{-5}.
-Difficultés potentielles : précisions.
+Les différents résultats sont disponibles en faisant les test grâces aux fonctionnalités implémentées dans le programme.
 
 
+\subsection{Série S}
+\label{sec:orga13e5d9}
 
-Résultats : Les deux polynômes sont les mêmes et les calculs sont les bons.
+Liste de points sans difficulté particulière, mais pas dans le bon ordre.
+
+Résultats : On peut voir que les résultats sont les bons : l'approximation à l'air (graphiquement) efficace.
 
 
 
 \subsection{Les trois séries :}
-\label{sec:org7e19b3f}
+\label{sec:org4852285}
 
 Suites de points normaux.
 Difficultés potentielles : aucune, sauf pour le dernier qui ne pourra sûrement pas être calculé (car ce n'est pas une suite de points avec différents \(x\))
@@ -481,16 +464,16 @@ Difficultés potentielles : aucune, sauf pour le dernier qui ne pourra sûrement
 Résultats : 
 
 \begin{enumerate}
-\item Le polynôme est le bon, aucune difficulté
+\item Les approximations sont les bonnes, aucune difficulté.
 
-\item Le polynôme est le bon, mais des erreurs d'approximations sont présentes. Les polynômes ne sont pas exactement les mêmes.
+\item Les approximations sont bonnes, aucune difficulté également.
 
-\item Ne peut pas se calculer : en effet, les points sont sur le même X. L'interpolation est donc incalculable (et infaisable).
+\item Ne peut pas se calculer : en effet, les points sont sur le même X. Les approximations sont donc incalculables (et infaisable).
 \end{enumerate}
 
 
 \subsection{Dépenses mensuelles et revenus :}
-\label{sec:orgc24ea3b}
+\label{sec:orgedc362c}
 
 Pour ces données, il y a un grand nombre de données, ainsi qu'un axe des x qui commence avec de "grandes valeurs".
 
@@ -500,32 +483,40 @@ Difficultés potentielles : précisions dû aux résultats importants obtenus.
 Résultats :Les polynômes ont soit des coefficients très importants, soit des coefficients presque négligeable. En revanche, on peut constater qu'il y a des approximations de calcul dans les deux méthodes. En effet, les deux polynômes finaux ne sont pas exactement les mêmes, même si ils sont tous les deux du même ordre de grandeur.
 
 
+\subsection{Série chronologique avec accroissement exponentiel}
+\label{sec:orga51dd6a}
+
+L'exponentiel de la forme \(y = ce^{dx}\) est parfaitement sur les données, ce qui prouve que cette approximation est adaptée.
+
+\subsection{Vérification de la loi d Pareto}
+\label{sec:org415b517}
+
+L'exponentiel de la forme \(y = ax^b\) est parfaitement sur les données, ce qui prouve la vérification de cette loi.
+
 \subsection{Commentaire global}
-\label{sec:org458c2ac}
+\label{sec:orgff3ab84}
 
 Pour ses différents jeux d'essais, on peut constater plusieurs choses :
 
 \begin{enumerate}
-\item L'unicité du polynôme obtenu
+\item La méthode des droites de régression et deux droites de régression ne donnent pas la même chose
 
-En effet, ce dernier est souvent le même pour les deux méthodes. Évidemment, des approximations de calcul sont présentes.
+Et c'est normal. En effet, avec l'un, nous appliquons la formule sur l'ensemble des points. Tandis que sur la deuxième, nous séparons le tableau en deux, puis effectuons une moyenne des deux droites obtenues. Leur efficacité dépend donc des points donnés, et est donc "aléatoire".
 
-\item Influence de la modification d'un ou plusieurs points donnés sur le polynôme :
-Lorsque l'on donne des points aléatoires au fur et à mesure grâce à l'implémentation de notre méthode "placer un point" pour mettre un point, on peut voir que les deux polynômes s'adaptent bien.
+\item Les méthodes d'ajustements sont plus ou moins précises en fonction des cas (comme on peut le constater dans le programme)
 
 \item Évaluation des coûts :
-Pour Newton, la complexité est de l'ordre (o)n\textsuperscript{2}, tandis que pour Lagrange, elle est de (o)n\textsuperscript{3}. 
-Vous pouvez, grâce au programme, afficher les polynômes avec une grande ou une petite précision. Si vous choisissez la méthode précise, vous aurez alors la moyenne des différences avec les points originaux, ce qui nous permet d'avoir une idée précise sur l’efficacité des méthodes.
+Pour les droites d'approximation, la complexité est de l'ordre (o)n\textsuperscript{2}, elle est également de (o)n\textsuperscript{2} pour les méthodes des questions 3 et 4.
 \end{enumerate}
 
-\newpage
+
 \section{SDL}
-\label{sec:orgf7f0c61}
+\label{sec:orgb9d8e38}
 
 Le code qui nous permet de gérer la fenêtre SDL est disponible \href{render.c}{ici}.
 
 \subsection{Début}
-\label{sec:orgece06cf}
+\label{sec:org93d9819}
 
 Pour démarrer SDL, nous devons initialiser de nombreuses variables, comme par exemple :
 
@@ -542,10 +533,10 @@ Pour démarrer SDL, nous devons initialiser de nombreuses variables, comme par e
 
 
 \subsection{Affichage et fonctionnalité}
-\label{sec:org05fb25c}
+\label{sec:org27bb6ce}
 
 \subsubsection{Affichage}
-\label{sec:org9a912ae}
+\label{sec:org069e643}
 
 Pour effectuer l'affichage d'une fenêtre SDL, nous devons passer par une boucle \emph{while}.
 
@@ -567,29 +558,28 @@ Puis, nous avons aussi un cas de débogage. En effet, si l'on n'est pas entré d
 
 
 \subsubsection{Fonctionnalités :}
-\label{sec:org85eb6ea}
+\label{sec:org24f32e4}
 
 Divers fonctionnalités sont présentes :
-Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant l'interpolation lagrangienne et newtonienne, ainsi que la liste de points à droite.
+Vous pouvez afficher la fenêtre grâce à la touche "g". Vous pouvez désormais voir la liste des points, les courbes représentant les différentes méthodes d'approximation, ainsi que la liste de points à droite.
 
 De plus, si jamais vous voulez rajouter des points à la liste, cette fonctionnalité est disponible grâce au bouton gauche de la souris. Le bouton droit aura pour effet de supprimer le point sélectionné.
 
 Le curseur aura alors une position (x et y) qui sera automatiquement ajouté dans la liste des points. Les courbes ainsi que les polynômes vont s'adapter automatiquement !
 
+D'autre part, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
 
-Enfin, vous pouvez zoomer et dézoomer grâce à la molette de la souris.
+Enfin, vous pouvez activer ou désactiver les différentes courbes des fonctions en appuyant sur leur nom. 
 
 
 \subsection{Fin de SDL}
-\label{sec:orga3a49ea}
+\label{sec:org604d217}
 
 La fonction \emph{end-sdl} nous permet de fermet la fenêtre SDL proprement, ainsi que faire les opérations nécessaires pour vider la mémoire qui a besoin d'être libéré.
 
+
 \section{Conclusion sur les méthodes}
-\label{sec:org61f6bbe}
+\label{sec:org4bafc51}
 
-Nous pourrions sûrement améliorer notre programme pour Newton : en effet, d'après la définition des différences divisées, lorsque l'on ajoute de nouveaux points, nous ne sommes pas obligés de recalculer l'ensemble des coefficients du polynôme.
-
-
-En revanche, malgré la différence de programme et de méthode utilisé, les méthodes nous amènent au même résultat (hors approximation des calculs). En effet, les polynômes, grâce aux jeux de données, sont trés proches et passent par les différents points donnés (voir fenêtre graphique SDL).
+Différentes méthodes peuvent être utilisées pour une approximation. En effet, dans certains cas, les droites d'approximations seront plus efficaces, tandis que, par exemple, pour la loi de Pareto, nous préférerons une des méthodes d'ajustement.
 \end{document}
