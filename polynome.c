@@ -71,14 +71,14 @@ void affichepolynomeexpo(polynome *p)
   {
     if (i != 0)
     {
-      printf("d = %6.2f", p->p[i]);
+      printf("d = %6.10f\n", p->p[i]);
     }
     else
     {
-      printf("ce = %6.2f ", p->p[i]);
+      printf("ce = %6.10f \n", p->p[i]);
     }
   }
-  printf("Donc le poly expo est : %6.2f ^ %6.2f x\n", p->p[0], p->p[1]);
+  printf("Donc le poly expo est : %6.10f ^ %6.10f x\n", p->p[0], p->p[1]);
   printf("\n");
 }
 
@@ -89,14 +89,15 @@ void affichepolynomepuissance(polynome *p)
   {
     if (i != 0)
     {
-      printf("b = %6.2f  ", p->p[i]);
+      printf("b = %6.10f  \n", p->p[i]);
     }
     else
     {
-      printf("a = %6.2f ", p->p[i]);
+      printf("a = %6.10f \n", p->p[i]);
     }
   }
-  printf("Donc le poly puissance est : %6.2f * x ^ %6.2f\n", p->p[0], p->p[1]);
+  printf("Donc le poly puissance est : %6.10f * x ^ %6.10f\n", p->p[0],
+         p->p[1]);
   printf("\n");
 }
 
