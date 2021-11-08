@@ -37,8 +37,6 @@ Liste *RenderingInterpolation(Liste *l)
   ResultPoints[2] = creerListe();
   ResultPoints[3] = creerListe();
 
-
-
   long int LastFrame;
   long int TimeCount;
   long int NowTime;
@@ -165,9 +163,10 @@ Liste *RenderingInterpolation(Liste *l)
                     ResultPoly[numb]->p[0];
                 break;
               case 2:
-                ptempo.y =
-                    pow(ResultPoly[numb]->p[0],
-                        (float)(graphXdeb + (i * (float)(graphXS) / nbPoints)) * ResultPoly[numb]->p[1]);
+                ptempo.y = (ResultPoly[numb]->p[0] / exp(1) *
+                            exp((float)(graphXdeb +
+                                        (i * (float)(graphXS) / nbPoints)) *
+                                ResultPoly[numb]->p[1]));
                 break;
               case 3:
                 ptempo.y =
@@ -217,7 +216,7 @@ Liste *RenderingInterpolation(Liste *l)
                                    ((-m->suiv->val.y - graphYdeb) / graphXS) *
                                            (SizeY / 2 - (2 * SizeY / 2 / 100)) +
                                        (SizeY / 2 / 100));
-		m = m->suiv;
+                m = m->suiv;
               }
             }
           }
@@ -326,59 +325,75 @@ Liste *RenderingInterpolation(Liste *l)
                    sourisY < (SizeY / 8) + (SizeY * 10 / 25) + SizeY * 2 / 25)
           {
             Stape = 0;
-          }else if(
-		   sourisX > SizeX/100 && 
-		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*2.8 &&
-		   sourisX < SizeX/100 + (SizeX/9) * 1.7 &&
-		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*1.8
-		   ){
-	    if(ascciListeAff & 0x01){
-	      ascciListeAff -= 1;
-	      done = 0;
-	    }else{
-	      ascciListeAff += 1;
-	      done = 0;
-	    }
-	  }else if(
-		   sourisX > SizeX/100 && 
-		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*1.2 &&
-		   sourisX < SizeX/100 + (SizeX/9) * 2 &&
-		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*0.2
-		   ){
-	    if(ascciListeAff & 0x02){
-	      ascciListeAff -= 2;
-	      done = 0;
-	    }else{
-	      ascciListeAff += 2;
-	      done = 0;
-	    }
-	  }else if(
-		   sourisX > SizeX/100 + SizeX/2 && 
-		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*2.8 &&
-		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 3.2 &&
-		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*1.8
-		   ){
-	    if(ascciListeAff & 0x04){
-	      ascciListeAff -= 4;
-	      done = 0;
-	    }else{
-	      ascciListeAff += 4;
-	      done = 0;
-	    }
-	  }else if(
-		   sourisX > SizeX/100 + SizeX/2 && 
-		   sourisY > (8*SizeY - (SizeY/100))/8 - SizeY/25*1.2 &&
-		   sourisX < SizeX/100 + SizeX/2 + (SizeX/9) * 3.1 &&
-		   sourisY < (8*SizeY - (SizeY/100))/8 - SizeY/25*0.2
-		   ){
-	    if(ascciListeAff & 0x08){
-	      ascciListeAff -= 8;
-	      done = 0;
-	    }else{
-	      ascciListeAff += 8;
-	      done = 0;
-	    }
-	  }
+          }
+          else if (sourisX > SizeX / 100 &&
+                   sourisY >
+                       (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 2.8 &&
+                   sourisX < SizeX / 100 + (SizeX / 9) * 1.7 &&
+                   sourisY < (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 1.8)
+          {
+            if (ascciListeAff & 0x01)
+            {
+              ascciListeAff -= 1;
+              done = 0;
+            }
+            else
+            {
+              ascciListeAff += 1;
+              done = 0;
+            }
+          }
+          else if (sourisX > SizeX / 100 &&
+                   sourisY >
+                       (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 1.2 &&
+                   sourisX < SizeX / 100 + (SizeX / 9) * 2 &&
+                   sourisY < (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 0.2)
+          {
+            if (ascciListeAff & 0x02)
+            {
+              ascciListeAff -= 2;
+              done = 0;
+            }
+            else
+            {
+              ascciListeAff += 2;
+              done = 0;
+            }
+          }
+          else if (sourisX > SizeX / 100 + SizeX / 2 &&
+                   sourisY >
+                       (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 2.8 &&
+                   sourisX < SizeX / 100 + SizeX / 2 + (SizeX / 9) * 3.2 &&
+                   sourisY < (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 1.8)
+          {
+            if (ascciListeAff & 0x04)
+            {
+              ascciListeAff -= 4;
+              done = 0;
+            }
+            else
+            {
+              ascciListeAff += 4;
+              done = 0;
+            }
+          }
+          else if (sourisX > SizeX / 100 + SizeX / 2 &&
+                   sourisY >
+                       (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 1.2 &&
+                   sourisX < SizeX / 100 + SizeX / 2 + (SizeX / 9) * 3.1 &&
+                   sourisY < (8 * SizeY - (SizeY / 100)) / 8 - SizeY / 25 * 0.2)
+          {
+            if (ascciListeAff & 0x08)
+            {
+              ascciListeAff -= 8;
+              done = 0;
+            }
+            else
+            {
+              ascciListeAff += 8;
+              done = 0;
+            }
+          }
         }
         else if (event.button.button == SDL_BUTTON_RIGHT)
         {
